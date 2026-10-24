@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipos_vehiculo">
+        <item>Carro</item>
+        <item>Motocicleta</item>
+        <item>Camioneta</item>
+        <item>Camión</item>
+        <item>Otro</item>
+    </string-array>
+
+    <string-array name="tipos_documento">
+        <item>SOAT</item>
+        <item>Revisión técnico-mecánica</item>
+        <item>Impuesto vehicular</item>
+        <item>Licencia de conducción</item>
+        <item>Mantenimiento</item>
+        <item>Otro documento</item>
+    </string-array>
+</resources>

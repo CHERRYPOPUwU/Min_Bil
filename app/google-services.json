@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "286309610718",
+    "project_id": "controlvial-879d0",
+    "storage_bucket": "controlvial-879d0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286309610718:android:ff093749d54177937cfe4f",
+        "android_client_info": {
+          "package_name": "com.example.controlvial"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcPFR2PlszT72VmGsL9i42Dd03Gh5aP7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
