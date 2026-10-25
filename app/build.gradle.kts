@@ -4,6 +4,8 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+layout.buildDirectory.set(File("C:/ControlVialBuild/app"))
+
 android {
     namespace = "com.example.controlvial"
 

@@ -349,41 +349,50 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="4dp" />
 
-                <EditText
-                    android:id="@+id/etMarca"
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:hint="Marca (ej. Chevrolet)"
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:paddingHorizontal="12dp"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Marca del vehículo"
+                    android:textColor="#37474F"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/etModelo"
+                <Spinner
+                    android:id="@+id/spMarca"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:hint="Modelo (ej. Onix)"
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:paddingHorizontal="12dp"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="4dp" />
 
-                <EditText
-                    android:id="@+id/etAnio"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Línea / Modelo"
+                    android:textColor="#37474F"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spModelo"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:hint="Año de fabricación (ej. 2022)"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:paddingHorizontal="12dp"
-                    android:textSize="14sp" />
+                    android:layout_marginTop="4dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Año de fabricación"
+                    android:textColor="#37474F"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/spAnio"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="4dp" />
 
                 <EditText
                     android:id="@+id/etColor"
@@ -393,6 +402,18 @@
                     android:background="@android:drawable/editbox_background_normal"
                     android:hint="Color del vehículo"
                     android:inputType="textCapWords"
+                    android:singleLine="true"
+                    android:paddingHorizontal="12dp"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/etKilometraje"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:drawable/editbox_background_normal"
+                    android:hint="Kilometraje actual"
+                    android:inputType="number"
                     android:singleLine="true"
                     android:paddingHorizontal="12dp"
                     android:textSize="14sp" />
@@ -453,7 +474,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Documentación"
+            android:text="Agendamiento y Documentos"
             android:textColor="#0F2027"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -463,7 +484,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="Asocia cada documento con su vehículo."
+            android:text="Asocia cada mantenimiento o documento a tu vehículo."
             android:textColor="#78909C"
             android:textSize="13sp" />
 
@@ -486,7 +507,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="02 · Nuevo documento"
+                    android:text="02 · Nuevo agendamiento"
                     android:textColor="#0288D1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -510,7 +531,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Tipo de documento"
+                    android:text="Tipo de servicio o documento"
                     android:textColor="#37474F"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -539,7 +560,7 @@
                     android:layout_height="52dp"
                     android:layout_marginTop="18dp"
                     android:backgroundTint="#0288D1"
-                    android:text="＋ Guardar documento"
+                    android:text="＋ Guardar agendamiento"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="15sp"

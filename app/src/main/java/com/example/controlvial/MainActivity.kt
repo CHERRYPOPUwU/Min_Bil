@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -38,10 +39,11 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var etPlaca: EditText
     private lateinit var spTipoVehiculo: Spinner
-    private lateinit var etMarca: EditText
-    private lateinit var etModelo: EditText
-    private lateinit var etAnio: EditText
+    private lateinit var spMarca: Spinner
+    private lateinit var spModelo: Spinner
+    private lateinit var spAnio: Spinner
     private lateinit var etColor: EditText
+    private lateinit var etKilometraje: EditText
     private lateinit var btnGuardarVehiculo: Button
 
     private lateinit var tvVehiculosCantidad: TextView
@@ -294,10 +296,11 @@ class MainActivity : AppCompatActivity() {
     private fun conectarVistas() {
         etPlaca = findViewById(R.id.etPlaca)
         spTipoVehiculo = findViewById(R.id.spTipoVehiculo)
-        etMarca = findViewById(R.id.etMarca)
-        etModelo = findViewById(R.id.etModelo)
-        etAnio = findViewById(R.id.etAnio)
+        spMarca = findViewById(R.id.spMarca)
+        spModelo = findViewById(R.id.spModelo)
+        spAnio = findViewById(R.id.spAnio)
         etColor = findViewById(R.id.etColor)
+        etKilometraje = findViewById(R.id.etKilometraje)
         btnGuardarVehiculo = findViewById(R.id.btnGuardarVehiculo)
 
         tvVehiculosCantidad = findViewById(R.id.tvVehiculosCantidad)
@@ -327,12 +330,68 @@ class MainActivity : AppCompatActivity() {
         )
         spTipoVehiculo.adapter = adapterVehiculo
 
+        val marcasVehiculo = arrayOf(
+            "Chevrolet", "Renault", "Mazda", "Kia", "Toyota", 
+            "Ford", "Nissan", "Volkswagen", "Suzuki", "Hyundai", 
+            "Honda", "Yamaha", "Bajaj", "AKT", "Otra"
+        )
+        val adapterMarca = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            marcasVehiculo
+        )
+        spMarca.adapter = adapterMarca
+
+        val modelosPorMarca = mapOf(
+            "Chevrolet" to arrayOf("Onix", "Spark", "Sail", "Tracker", "Beat", "Captiva", "Aveo", "Otro"),
+            "Renault" to arrayOf("Logan", "Sandero", "Duster", "Stepway", "Kwid", "Clio", "Otro"),
+            "Mazda" to arrayOf("2", "3", "CX-30", "CX-5", "6", "Otro"),
+            "Kia" to arrayOf("Picanto", "Rio", "Sportage", "Cerato", "Seltos", "Otro"),
+            "Toyota" to arrayOf("Corolla", "Hilux", "Fortuner", "Prado", "Yaris", "Otro"),
+            "Ford" to arrayOf("Fiesta", "EcoSport", "Escape", "Explorer", "Ranger", "Otro"),
+            "Nissan" to arrayOf("March", "Versa", "Sentra", "Kicks", "Frontier", "Otro"),
+            "Volkswagen" to arrayOf("Gol", "Jetta", "Polo", "T-Cross", "Amarok", "Otro"),
+            "Suzuki" to arrayOf("Swift", "Vitara", "Jimny", "S-Cross", "Alto", "Otro"),
+            "Hyundai" to arrayOf("i10", "Accent", "Tucson", "Creta", "Kona", "Otro"),
+            "Honda" to arrayOf("Civic", "CR-V", "HR-V", "Fit", "City", "Otro"),
+            "Yamaha" to arrayOf("FZ", "MT-09", "NMAX", "XTZ", "R6", "BWS", "Otro"),
+            "Bajaj" to arrayOf("Pulsar", "Boxer", "Discover", "Dominar", "Otro"),
+            "AKT" to arrayOf("NKD", "CR4", "TT", "Dynamic", "Otro"),
+            "Otra" to arrayOf("Generico", "Otro")
+        )
+
+        spMarca.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val marcaSeleccionada = parent?.getItemAtPosition(position).toString()
+                val modelos = modelosPorMarca[marcaSeleccionada] ?: arrayOf("Otro")
+                val adapterModelo = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, modelos)
+                spModelo.adapter = adapterModelo
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        val anioActual = Calendar.getInstance().get(Calendar.YEAR)
+        val anios = (anioActual + 1 downTo 1980).map { it.toString() }.toTypedArray()
+        val adapterAnio = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, anios)
+        spAnio.adapter = adapterAnio
+
         val tiposDocumento = arrayOf(
+            // Documentos
             "SOAT",
             "Tecnomecánica",
             "Seguro Todo Riesgo",
             "Extintor",
             "Licencia",
+            // Mantenimientos
+            "Cambio de Aceite",
+            "Filtros",
+            "Frenos",
+            "Llantas",
+            "Batería",
+            "Refrigeración",
+            "Suspensión",
+            "Transmisión",
+            "Mantenimiento General",
             "Otro"
         )
         val adapterDocumento = ArrayAdapter(
@@ -403,19 +462,22 @@ class MainActivity : AppCompatActivity() {
             .uppercase(Locale.getDefault())
 
         val tipo = spTipoVehiculo.selectedItem?.toString() ?: ""
-        val marca = etMarca.text.toString().trim()
-        val modelo = etModelo.text.toString().trim()
-        val anioTexto = etAnio.text.toString().trim()
+        val marca = spMarca.selectedItem?.toString() ?: ""
+        val modelo = spModelo.selectedItem?.toString() ?: ""
+        val anioTexto = spAnio.selectedItem?.toString() ?: ""
         val color = etColor.text.toString().trim()
+        val kilometrajeTexto = etKilometraje.text.toString().trim()
 
-        if (!placa.matches(Regex("[A-Z0-9-]{5,8}"))) {
-            etPlaca.error = "Ingresa una placa válida"
+        val placaLimpia = placa.replace("-", "")
+
+        if (!placaLimpia.matches(Regex("^[A-Z]{3}[0-9]{2}[A-Z0-9]$"))) {
+            etPlaca.error = "Formato inválido (Ej: ABC123 o ABC12D)"
             etPlaca.requestFocus()
             return
         }
 
         if (vehiculos.any {
-                it.optString("placa").equals(placa, ignoreCase = true)
+                it.optString("placa").equals(placaLimpia, ignoreCase = true)
             }
         ) {
             Toast.makeText(
@@ -427,25 +489,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (marca.isEmpty()) {
-            etMarca.error = "Ingresa la marca"
-            etMarca.requestFocus()
+            Toast.makeText(this, "Selecciona la marca", Toast.LENGTH_SHORT).show()
+            spMarca.requestFocus()
             return
         }
 
-        if (modelo.isEmpty()) {
-            etModelo.error = "Ingresa el modelo"
-            etModelo.requestFocus()
-            return
-        }
-
-        val anio = anioTexto.toIntOrNull()
-        val anioActual = Calendar.getInstance().get(Calendar.YEAR)
-
-        if (anio == null || anio < 1900 || anio > anioActual + 1) {
-            etAnio.error = "Ingresa un año válido"
-            etAnio.requestFocus()
-            return
-        }
+        val anio = anioTexto.toIntOrNull() ?: Calendar.getInstance().get(Calendar.YEAR)
 
         if (color.isEmpty()) {
             etColor.error = "Ingresa el color"
@@ -453,27 +502,31 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        val kilometraje = kilometrajeTexto.toIntOrNull() ?: 0
+
         val vehiculo = JSONObject().apply {
-            put("placa", placa)
+            put("placa", placaLimpia)
             put("tipo", tipo)
             put("marca", marca)
             put("modelo", modelo)
             put("anio", anio)
             put("color", color)
+            put("kilometraje", kilometraje)
         }
 
         vehiculos.add(vehiculo)
         guardarVehiculos()
 
         firestoreSync.guardarVehiculo(
-            placa,
+            placaLimpia,
             mapOf(
-                "placa" to placa,
+                "placa" to placaLimpia,
                 "tipo" to tipo,
                 "marca" to marca,
                 "modelo" to modelo,
                 "anio" to anio,
-                "color" to color
+                "color" to color,
+                "kilometraje" to kilometraje
             )
         ) { exito, error ->
             if (!exito) {
@@ -487,10 +540,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         etPlaca.text.clear()
-        etMarca.text.clear()
-        etModelo.text.clear()
-        etAnio.text.clear()
         etColor.text.clear()
+        etKilometraje.text.clear()
+        
+        spTipoVehiculo.setSelection(0)
+        spMarca.setSelection(0)
+        spAnio.setSelection(0)
 
         actualizarSelectorVehiculos()
         mostrarVehiculos()
