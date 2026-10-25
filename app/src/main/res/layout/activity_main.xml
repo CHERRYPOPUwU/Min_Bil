@@ -149,9 +149,20 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvTotalGastos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Documentos asociados a tus vehículos"
+                    android:layout_marginTop="4dp"
+                    android:text="Gastos: $0"
+                    android:textColor="#388E3C"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Servicios y documentos registrados"
                     android:textColor="#90A4AE"
                     android:textSize="12sp" />
 
@@ -548,9 +559,33 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="12dp"
                     android:background="@android:drawable/editbox_background_normal"
-                    android:hint="Fecha de vencimiento"
+                    android:hint="Fecha (Realización o Vencimiento)"
                     android:clickable="true"
                     android:focusable="false"
+                    android:paddingHorizontal="12dp"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/etKilometrajeMant"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:drawable/editbox_background_normal"
+                    android:hint="Kilometraje al momento del servicio (Opcional)"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:paddingHorizontal="12dp"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/etCosto"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:drawable/editbox_background_normal"
+                    android:hint="Costo total en $ (Opcional)"
+                    android:inputType="numberDecimal"
+                    android:singleLine="true"
                     android:paddingHorizontal="12dp"
                     android:textSize="14sp" />
 
@@ -587,10 +622,10 @@
                 android:id="@+id/tvCantidad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Mis documentos (0)"
+                android:text="Mi historial (0)"
                 android:textColor="#0F2027"
                 android:textSize="18sp"
-                exact:textStyle="bold" />
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/contenedorDocumentos"

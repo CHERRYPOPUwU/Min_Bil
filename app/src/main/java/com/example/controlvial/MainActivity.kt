@@ -52,6 +52,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var spVehiculoDocumento: Spinner
     private lateinit var spDocumento: Spinner
     private lateinit var etFecha: EditText
+    private lateinit var etKilometrajeMant: EditText
+    private lateinit var etCosto: EditText
     private lateinit var btnGuardar: Button
 
     private lateinit var tvCantidad: TextView
@@ -59,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var tvTotalVehiculos: TextView
     private lateinit var tvTotalDocumentos: TextView
+    private lateinit var tvTotalGastos: TextView
     private lateinit var tvProximosVencer: TextView
     private lateinit var tvVencidos: TextView
     private lateinit var contenedorAlertas: LinearLayout
@@ -309,6 +312,8 @@ class MainActivity : AppCompatActivity() {
         spVehiculoDocumento = findViewById(R.id.spVehiculoDocumento)
         spDocumento = findViewById(R.id.spDocumento)
         etFecha = findViewById(R.id.etFecha)
+        etKilometrajeMant = findViewById(R.id.etKilometrajeMant)
+        etCosto = findViewById(R.id.etCosto)
         btnGuardar = findViewById(R.id.btnGuardar)
 
         tvCantidad = findViewById(R.id.tvCantidad)
@@ -316,6 +321,7 @@ class MainActivity : AppCompatActivity() {
 
         tvTotalVehiculos = findViewById(R.id.tvTotalVehiculos)
         tvTotalDocumentos = findViewById(R.id.tvTotalDocumentos)
+        tvTotalGastos = findViewById(R.id.tvTotalGastos)
         tvProximosVencer = findViewById(R.id.tvProximosVencer)
         tvVencidos = findViewById(R.id.tvVencidos)
         contenedorAlertas = findViewById(R.id.contenedorAlertas)
@@ -665,6 +671,8 @@ class MainActivity : AppCompatActivity() {
         val placa = vehiculo.optString("placa")
         val tipo = spDocumento.selectedItem?.toString() ?: ""
         val fecha = etFecha.text.toString().trim()
+        val kilometrajeTexto = etKilometrajeMant.text.toString().trim()
+        val costoTexto = etCosto.text.toString().trim()
 
         if (fecha.isEmpty()) {
             etFecha.error = "Selecciona una fecha"
@@ -683,11 +691,16 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
+        val km = kilometrajeTexto.toIntOrNull() ?: 0
+        val costo = costoTexto.toDoubleOrNull() ?: 0.0
+
         val documento = JSONObject().apply {
             put("placa", placa)
             put("vehiculo", vehiculo.optString("tipo"))
             put("tipo", tipo)
             put("fecha", fecha)
+            put("kilometraje", km)
+            put("costo", costo)
         }
 
         documentos.add(documento)
@@ -701,7 +714,9 @@ class MainActivity : AppCompatActivity() {
                 "placa" to placa,
                 "vehiculo" to vehiculo.optString("tipo"),
                 "tipo" to tipo,
-                "fecha" to fecha
+                "fecha" to fecha,
+                "kilometraje" to km,
+                "costo" to costo
             )
         ) { exito, error ->
             if (!exito) {
@@ -715,6 +730,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         etFecha.text.clear()
+        etKilometrajeMant.text.clear()
+        etCosto.text.clear()
 
         mostrarDocumentos()
         actualizarPanelResumen()
@@ -772,6 +789,15 @@ class MainActivity : AppCompatActivity() {
     private fun actualizarPanelResumen() {
         tvTotalVehiculos.text = vehiculos.size.toString()
         tvTotalDocumentos.text = documentos.size.toString()
+
+        var totalGastos = 0.0
+        for (doc in documentos) {
+            totalGastos += doc.optDouble("costo", 0.0)
+        }
+        
+        val formatMoneda = java.text.NumberFormat.getCurrencyInstance(Locale("es", "CO"))
+        formatMoneda.maximumFractionDigits = 0
+        tvTotalGastos.text = "Gastos: ${formatMoneda.format(totalGastos)}"
 
         val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         formato.isLenient = false
@@ -1051,10 +1077,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun mostrarDocumentos() {
         contenedorDocumentos.removeAllViews()
-        tvCantidad.text = "Mis documentos (${documentos.size})"
+        tvCantidad.text = "Mi historial (${documentos.size})"
 
         val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         formato.isLenient = false
+
+        val formatMoneda = java.text.NumberFormat.getCurrencyInstance(Locale("es", "CO"))
+        formatMoneda.maximumFractionDigits = 0
 
         val hoy = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0)
@@ -1068,6 +1097,8 @@ class MainActivity : AppCompatActivity() {
             val tipo = documento.optString("tipo")
             val placa = documento.optString("placa")
             val fechaTexto = documento.optString("fecha")
+            val km = documento.optInt("kilometraje", 0)
+            val costo = documento.optDouble("costo", 0.0)
 
             var diasRestantes: Int? = null
 
@@ -1124,7 +1155,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             val fecha = TextView(this).apply {
-                text = "Vencimiento: $fechaTexto"
+                text = buildString {
+                    append("Fecha / Vencimiento: $fechaTexto\n")
+                    
+                    if (km > 0) {
+                        append("Kilometraje: $km km\n")
+                    }
+                    if (costo > 0.0) {
+                        val formatMoneda = java.text.NumberFormat.getCurrencyInstance(Locale("es", "CO"))
+                        formatMoneda.maximumFractionDigits = 0
+                        append("Costo: ${formatMoneda.format(costo)}")
+                    }
+                }
                 textSize = 14f
                 setTextColor(Color.rgb(71, 85, 105))
                 setPadding(0, 6, 0, 2)
