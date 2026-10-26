@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var spDocumento: Spinner
     private lateinit var etFecha: EditText
     private lateinit var etKilometrajeMant: EditText
+    private lateinit var etProximoKilometraje: EditText
     private lateinit var etCosto: EditText
     private lateinit var btnGuardar: Button
 
@@ -67,6 +68,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var contenedorAlertas: LinearLayout
 
     private val vehiculos = mutableListOf<JSONObject>()
+    private var tiposYMarcas = mutableMapOf<String, Map<String, List<String>>>()
+    private var marcasYLineas = mutableMapOf<String, List<String>>()
     private val documentos = mutableListOf<JSONObject>()
     private val firestoreSync by lazy { FirestoreSync() }
 
@@ -313,6 +316,7 @@ class MainActivity : AppCompatActivity() {
         spDocumento = findViewById(R.id.spDocumento)
         etFecha = findViewById(R.id.etFecha)
         etKilometrajeMant = findViewById(R.id.etKilometrajeMant)
+        etProximoKilometraje = findViewById(R.id.etProximoKilometraje)
         etCosto = findViewById(R.id.etCosto)
         btnGuardar = findViewById(R.id.btnGuardar)
 
@@ -328,48 +332,61 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun configurarSpinners() {
-        val tiposVehiculo = arrayOf("Carro", "Moto", "Camión", "Otro")
-        val adapterVehiculo = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            tiposVehiculo
-        )
+        // Cargar jerarquía de Tipos > Marcas > Líneas desde JSON
+        try {
+            val inputStream = resources.openRawResource(R.raw.tipos_marcas_lineas)
+            val jsonText = inputStream.bufferedReader().use { it.readText() }
+            val jsonObject = JSONObject(jsonText)
+            
+            val tiposIterador = jsonObject.keys()
+            while (tiposIterador.hasNext()) {
+                val tipo = tiposIterador.next()
+                if (tipo.equals("Otro", ignoreCase = true)) continue
+                
+                val marcasObj = jsonObject.getJSONObject(tipo)
+                val mapMarcas = mutableMapOf<String, List<String>>()
+                
+                val marcasIterador = marcasObj.keys()
+                while (marcasIterador.hasNext()) {
+                    val marca = marcasIterador.next()
+                    val lineasArray = marcasObj.getJSONArray(marca)
+                    val lineas = mutableListOf<String>()
+                    for (i in 0 until lineasArray.length()) {
+                        lineas.add(lineasArray.getString(i))
+                    }
+                    mapMarcas[marca] = lineas
+                }
+                tiposYMarcas[tipo] = mapMarcas
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // Fallback manual en caso de error
+            val fallbackMap = mapOf("CHEVROLET" to listOf("SPARK", "ONIX"))
+            tiposYMarcas["Automóvil"] = fallbackMap
+        }
+
+        val tiposLista = tiposYMarcas.keys.toMutableList()
+        tiposLista.sort()
+        
+        val adapterVehiculo = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, tiposLista)
         spTipoVehiculo.adapter = adapterVehiculo
-
-        val marcasVehiculo = arrayOf(
-            "Chevrolet", "Renault", "Mazda", "Kia", "Toyota", 
-            "Ford", "Nissan", "Volkswagen", "Suzuki", "Hyundai", 
-            "Honda", "Yamaha", "Bajaj", "AKT", "Otra"
-        )
-        val adapterMarca = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            marcasVehiculo
-        )
-        spMarca.adapter = adapterMarca
-
-        val modelosPorMarca = mapOf(
-            "Chevrolet" to arrayOf("Onix", "Spark", "Sail", "Tracker", "Beat", "Captiva", "Aveo", "Otro"),
-            "Renault" to arrayOf("Logan", "Sandero", "Duster", "Stepway", "Kwid", "Clio", "Otro"),
-            "Mazda" to arrayOf("2", "3", "CX-30", "CX-5", "6", "Otro"),
-            "Kia" to arrayOf("Picanto", "Rio", "Sportage", "Cerato", "Seltos", "Otro"),
-            "Toyota" to arrayOf("Corolla", "Hilux", "Fortuner", "Prado", "Yaris", "Otro"),
-            "Ford" to arrayOf("Fiesta", "EcoSport", "Escape", "Explorer", "Ranger", "Otro"),
-            "Nissan" to arrayOf("March", "Versa", "Sentra", "Kicks", "Frontier", "Otro"),
-            "Volkswagen" to arrayOf("Gol", "Jetta", "Polo", "T-Cross", "Amarok", "Otro"),
-            "Suzuki" to arrayOf("Swift", "Vitara", "Jimny", "S-Cross", "Alto", "Otro"),
-            "Hyundai" to arrayOf("i10", "Accent", "Tucson", "Creta", "Kona", "Otro"),
-            "Honda" to arrayOf("Civic", "CR-V", "HR-V", "Fit", "City", "Otro"),
-            "Yamaha" to arrayOf("FZ", "MT-09", "NMAX", "XTZ", "R6", "BWS", "Otro"),
-            "Bajaj" to arrayOf("Pulsar", "Boxer", "Discover", "Dominar", "Otro"),
-            "AKT" to arrayOf("NKD", "CR4", "TT", "Dynamic", "Otro"),
-            "Otra" to arrayOf("Generico", "Otro")
-        )
+        
+        spTipoVehiculo.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val tipoSeleccionado = parent?.getItemAtPosition(position).toString()
+                val marcasDisponibles = tiposYMarcas[tipoSeleccionado]?.keys?.toList()?.sorted() ?: listOf("OTRA")
+                val adapterMarca = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, marcasDisponibles)
+                spMarca.adapter = adapterMarca
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
 
         spMarca.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val tipoSeleccionado = spTipoVehiculo.selectedItem?.toString() ?: ""
                 val marcaSeleccionada = parent?.getItemAtPosition(position).toString()
-                val modelos = modelosPorMarca[marcaSeleccionada] ?: arrayOf("Otro")
+                
+                val modelos = tiposYMarcas[tipoSeleccionado]?.get(marcaSeleccionada) ?: listOf("OTRA")
                 val adapterModelo = ArrayAdapter(this@MainActivity, android.R.layout.simple_spinner_dropdown_item, modelos)
                 spModelo.adapter = adapterModelo
             }
@@ -377,7 +394,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val anioActual = Calendar.getInstance().get(Calendar.YEAR)
-        val anios = (anioActual + 1 downTo 1980).map { it.toString() }.toTypedArray()
+        val anios = (anioActual + 1 downTo 1960).map { it.toString() }.toTypedArray()
         val adapterAnio = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, anios)
         spAnio.adapter = adapterAnio
 
@@ -471,7 +488,7 @@ class MainActivity : AppCompatActivity() {
         val marca = spMarca.selectedItem?.toString() ?: ""
         val modelo = spModelo.selectedItem?.toString() ?: ""
         val anioTexto = spAnio.selectedItem?.toString() ?: ""
-        val color = etColor.text.toString().trim()
+        val colorBruto = etColor.text.toString().trim()
         val kilometrajeTexto = etKilometraje.text.toString().trim()
 
         val placaLimpia = placa.replace("-", "")
@@ -500,13 +517,17 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        val anio = anioTexto.toIntOrNull() ?: Calendar.getInstance().get(Calendar.YEAR)
+        val colorFormateado = colorBruto.split(" ").joinToString(" ") { 
+            it.lowercase().replaceFirstChar { char -> char.uppercase() } 
+        }
 
-        if (color.isEmpty()) {
-            etColor.error = "Ingresa el color"
+        if (!colorFormateado.matches(Regex("^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$"))) {
+            etColor.error = "Solo letras y espacios (ej. Azul Fiord)"
             etColor.requestFocus()
             return
         }
+
+        val anio = anioTexto.toIntOrNull() ?: Calendar.getInstance().get(Calendar.YEAR)
 
         val kilometraje = kilometrajeTexto.toIntOrNull() ?: 0
 
@@ -516,7 +537,7 @@ class MainActivity : AppCompatActivity() {
             put("marca", marca)
             put("modelo", modelo)
             put("anio", anio)
-            put("color", color)
+            put("color", colorFormateado)
             put("kilometraje", kilometraje)
         }
 
@@ -531,7 +552,7 @@ class MainActivity : AppCompatActivity() {
                 "marca" to marca,
                 "modelo" to modelo,
                 "anio" to anio,
-                "color" to color,
+                "color" to colorFormateado,
                 "kilometraje" to kilometraje
             )
         ) { exito, error ->
@@ -546,8 +567,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         etPlaca.text.clear()
-        etColor.text.clear()
         etKilometraje.text.clear()
+        etColor.text.clear()
         
         spTipoVehiculo.setSelection(0)
         spMarca.setSelection(0)
@@ -672,6 +693,7 @@ class MainActivity : AppCompatActivity() {
         val tipo = spDocumento.selectedItem?.toString() ?: ""
         val fecha = etFecha.text.toString().trim()
         val kilometrajeTexto = etKilometrajeMant.text.toString().trim()
+        val proximoKmTexto = etProximoKilometraje.text.toString().trim()
         val costoTexto = etCosto.text.toString().trim()
 
         if (fecha.isEmpty()) {
@@ -692,7 +714,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         val km = kilometrajeTexto.toIntOrNull() ?: 0
+        val proximoKm = proximoKmTexto.toIntOrNull() ?: 0
         val costo = costoTexto.toDoubleOrNull() ?: 0.0
+
+        val kmVehiculoActual = vehiculo.optInt("kilometraje", 0)
+        if (km > kmVehiculoActual) {
+            vehiculo.put("kilometraje", km)
+            guardarVehiculos()
+            firestoreSync.guardarVehiculo(placa, mapOf("kilometraje" to km)) { _, _ -> }
+        }
 
         val documento = JSONObject().apply {
             put("placa", placa)
@@ -700,6 +730,7 @@ class MainActivity : AppCompatActivity() {
             put("tipo", tipo)
             put("fecha", fecha)
             put("kilometraje", km)
+            put("proximo_kilometraje", proximoKm)
             put("costo", costo)
         }
 
@@ -716,6 +747,7 @@ class MainActivity : AppCompatActivity() {
                 "tipo" to tipo,
                 "fecha" to fecha,
                 "kilometraje" to km,
+                "proximo_kilometraje" to proximoKm,
                 "costo" to costo
             )
         ) { exito, error ->
@@ -731,6 +763,7 @@ class MainActivity : AppCompatActivity() {
 
         etFecha.text.clear()
         etKilometrajeMant.text.clear()
+        etProximoKilometraje.text.clear()
         etCosto.text.clear()
 
         mostrarDocumentos()
@@ -837,32 +870,39 @@ class MainActivity : AppCompatActivity() {
                 set(Calendar.MILLISECOND, 0)
             }.timeInMillis
 
+            var alertado = false
+
             when {
                 fechaNormalizada < hoy -> {
                     vencidos++
-                    alertas.add(
-                        "VENCIDO" to
-                                "$tipo · $placa\nVenció el $fechaTexto"
-                    )
+                    alertas.add("VENCIDO" to "$tipo · $placa\nVenció el $fechaTexto")
+                    alertado = true
                 }
-
                 fechaNormalizada <= limite30 -> {
                     proximos++
-
-                    val dias = TimeUnit.MILLISECONDS
-                        .toDays(fechaNormalizada - hoy)
-                        .toInt()
-
+                    val dias = TimeUnit.MILLISECONDS.toDays(fechaNormalizada - hoy).toInt()
                     val mensaje = when (dias) {
                         0 -> "Vence hoy"
                         1 -> "Vence mañana"
                         else -> "Vence en $dias días"
                     }
+                    alertas.add("PRÓXIMO" to "$tipo · $placa\n$mensaje ($fechaTexto)")
+                    alertado = true
+                }
+            }
 
-                    alertas.add(
-                        "PRÓXIMO" to
-                                "$tipo · $placa\n$mensaje ($fechaTexto)"
-                    )
+            // Revisión de alertas por kilometraje
+            val proximoKm = documento.optInt("proximo_kilometraje", 0)
+            if (!alertado && proximoKm > 0) {
+                val vehiculo = vehiculos.find { it.optString("placa").equals(placa, ignoreCase = true) }
+                val kmActual = vehiculo?.optInt("kilometraje", 0) ?: 0
+
+                if (kmActual >= proximoKm) {
+                    vencidos++
+                    alertas.add("VENCIDO" to "$tipo · $placa\nVenció a los $proximoKm km (Actual: $kmActual km)")
+                } else if (proximoKm - kmActual <= 1000) {
+                    proximos++
+                    alertas.add("PRÓXIMO" to "$tipo · $placa\nVence a los $proximoKm km (Faltan ${proximoKm - kmActual} km)")
                 }
             }
         }
@@ -1098,6 +1138,7 @@ class MainActivity : AppCompatActivity() {
             val placa = documento.optString("placa")
             val fechaTexto = documento.optString("fecha")
             val km = documento.optInt("kilometraje", 0)
+            val proximoKm = documento.optInt("proximo_kilometraje", 0)
             val costo = documento.optDouble("costo", 0.0)
 
             var diasRestantes: Int? = null
@@ -1127,7 +1168,20 @@ class MainActivity : AppCompatActivity() {
                 diasRestantes == 0 -> "Vence hoy"
                 diasRestantes == 1 -> "Vence mañana"
                 diasRestantes <= 30 -> "Vence en $diasRestantes días"
-                else -> "Vigente"
+                else -> {
+                    // Revisar vencimiento por kilometraje si la fecha está vigente
+                    if (proximoKm > 0) {
+                        val vehiculoDoc = vehiculos.find { it.optString("placa").equals(placa, ignoreCase = true) }
+                        val kmActualVehiculo = vehiculoDoc?.optInt("kilometraje", 0) ?: 0
+                        when {
+                            kmActualVehiculo >= proximoKm -> "Vencido por kilometraje"
+                            proximoKm - kmActualVehiculo <= 1000 -> "Próximo por kilometraje"
+                            else -> "Vigente"
+                        }
+                    } else {
+                        "Vigente"
+                    }
+                }
             }
 
             val tarjeta = LinearLayout(this).apply {
@@ -1136,10 +1190,10 @@ class MainActivity : AppCompatActivity() {
 
                 setBackgroundColor(
                     when {
-                        estado == "Vencido" ->
+                        estado.contains("Vencido") ->
                             Color.rgb(254, 242, 242)
 
-                        diasRestantes != null && diasRestantes in 0..30 ->
+                        estado.contains("Próximo") || (diasRestantes != null && diasRestantes in 0..30) ->
                             Color.rgb(255, 251, 235)
 
                         else -> Color.WHITE
@@ -1159,7 +1213,10 @@ class MainActivity : AppCompatActivity() {
                     append("Fecha / Vencimiento: $fechaTexto\n")
                     
                     if (km > 0) {
-                        append("Kilometraje: $km km\n")
+                        append("Kilometraje en servicio: $km km\n")
+                    }
+                    if (proximoKm > 0) {
+                        append("Próximo servicio a: $proximoKm km\n")
                     }
                     if (costo > 0.0) {
                         val formatMoneda = java.text.NumberFormat.getCurrencyInstance(Locale("es", "CO"))

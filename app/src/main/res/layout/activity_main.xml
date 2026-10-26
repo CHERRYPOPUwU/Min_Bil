@@ -405,25 +405,43 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="4dp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Color del vehículo"
+                    android:textColor="#37474F"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/etColor"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="4dp"
                     android:background="@android:drawable/editbox_background_normal"
-                    android:hint="Color del vehículo"
+                    android:hint="Color (ej. Azul Fiord)"
                     android:inputType="textCapWords"
                     android:singleLine="true"
                     android:paddingHorizontal="12dp"
                     android:textSize="14sp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Kilometraje actual"
+                    android:textColor="#37474F"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
                 <EditText
                     android:id="@+id/etKilometraje"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="4dp"
                     android:background="@android:drawable/editbox_background_normal"
-                    android:hint="Kilometraje actual"
+                    android:hint="Ej. 15000"
                     android:inputType="number"
                     android:singleLine="true"
                     android:paddingHorizontal="12dp"
@@ -572,6 +590,18 @@
                     android:layout_marginTop="12dp"
                     android:background="@android:drawable/editbox_background_normal"
                     android:hint="Kilometraje al momento del servicio (Opcional)"
+                    android:inputType="number"
+                    android:singleLine="true"
+                    android:paddingHorizontal="12dp"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/etProximoKilometraje"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:drawable/editbox_background_normal"
+                    android:hint="Próximo servicio a los (Km) (Opcional)"
                     android:inputType="number"
                     android:singleLine="true"
                     android:paddingHorizontal="12dp"
