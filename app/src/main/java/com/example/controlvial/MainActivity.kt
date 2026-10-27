@@ -277,7 +277,7 @@ class MainActivity : AppCompatActivity() {
     private fun confirmarCerrarSesion() {
         AlertDialog.Builder(this)
             .setTitle("Cerrar sesión")
-            .setMessage("¿Deseas salir de tu cuenta de ControlVial?")
+            .setMessage("¿Deseas salir de tu cuenta de Min Bil?")
             .setNegativeButton("Cancelar", null)
             .setPositiveButton("Cerrar sesión") { _, _ ->
                 FirebaseAuth.getInstance().signOut()

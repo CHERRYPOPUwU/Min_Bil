@@ -16,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#1E293B"
+            android:background="@color/primary_dark"
             android:orientation="vertical"
             android:padding="24dp"
             android:elevation="6dp"
@@ -25,7 +25,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="MiCarro 🚗"
+                android:text="Min Bil"
                 android:textColor="#FFFFFF"
                 android:textSize="32sp"
                 android:textStyle="bold" />
@@ -88,7 +88,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="🚗  Vehículos registrados"
+                    android:text="  Vehículos registrados"
                     android:textColor="#3B82F6"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -106,7 +106,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Vehículos activos en MiCarro"
+                    android:text="Vehículos activos en Min Bil"
                     android:textColor="#94A3B8"
                     android:textSize="13sp" />
 
@@ -451,7 +451,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="24dp"
-                    android:backgroundTint="#2563EB"
+                    android:backgroundTint="@color/primary"
                     android:text="＋ Añadir a mi garaje"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
@@ -635,7 +635,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_marginTop="24dp"
-                    android:backgroundTint="#2563EB"
+                    android:backgroundTint="@color/primary"
                     android:text="＋ Guardar historial"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
@@ -692,7 +692,7 @@
             android:layout_marginTop="32dp"
             android:gravity="center"
             android:padding="16dp"
-            android:text="MiCarro · Tu historial vehicular"
+            android:text="Min Bil · Tu historial vehicular"
             android:textColor="#94A3B8"
             android:textSize="13sp" />
 
