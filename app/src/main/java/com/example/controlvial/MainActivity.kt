@@ -55,9 +55,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etKilometrajeMant: EditText
     private lateinit var etProximoKilometraje: EditText
     private lateinit var etCosto: EditText
+    private lateinit var etTallerRepuestos: EditText
     private lateinit var btnGuardar: Button
 
     private lateinit var tvCantidad: TextView
+    private lateinit var spFiltroPlaca: Spinner
     private lateinit var contenedorDocumentos: LinearLayout
 
     private lateinit var tvTotalVehiculos: TextView
@@ -318,9 +320,11 @@ class MainActivity : AppCompatActivity() {
         etKilometrajeMant = findViewById(R.id.etKilometrajeMant)
         etProximoKilometraje = findViewById(R.id.etProximoKilometraje)
         etCosto = findViewById(R.id.etCosto)
+        etTallerRepuestos = findViewById(R.id.etTallerRepuestos)
         btnGuardar = findViewById(R.id.btnGuardar)
 
         tvCantidad = findViewById(R.id.tvCantidad)
+        spFiltroPlaca = findViewById(R.id.spFiltroPlaca)
         contenedorDocumentos = findViewById(R.id.contenedorDocumentos)
 
         tvTotalVehiculos = findViewById(R.id.tvTotalVehiculos)
@@ -668,6 +672,25 @@ class MainActivity : AppCompatActivity() {
         )
 
         spVehiculoDocumento.adapter = adapter
+
+        // Configurar selector de filtros
+        val filtroOpciones = mutableListOf("Todos los vehículos")
+        filtroOpciones.addAll(vehiculos.map { it.optString("placa") })
+        
+        val adapterFiltro = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            filtroOpciones
+        )
+        adapterFiltro.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spFiltroPlaca.adapter = adapterFiltro
+
+        spFiltroPlaca.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                mostrarDocumentos()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
     }
 
     // =========================================================
@@ -695,6 +718,7 @@ class MainActivity : AppCompatActivity() {
         val kilometrajeTexto = etKilometrajeMant.text.toString().trim()
         val proximoKmTexto = etProximoKilometraje.text.toString().trim()
         val costoTexto = etCosto.text.toString().trim()
+        val tallerRepuestos = etTallerRepuestos.text.toString().trim()
 
         if (fecha.isEmpty()) {
             etFecha.error = "Selecciona una fecha"
@@ -732,6 +756,7 @@ class MainActivity : AppCompatActivity() {
             put("kilometraje", km)
             put("proximo_kilometraje", proximoKm)
             put("costo", costo)
+            put("taller_repuestos", tallerRepuestos)
         }
 
         documentos.add(documento)
@@ -748,7 +773,8 @@ class MainActivity : AppCompatActivity() {
                 "fecha" to fecha,
                 "kilometraje" to km,
                 "proximo_kilometraje" to proximoKm,
-                "costo" to costo
+                "costo" to costo,
+                "taller_repuestos" to tallerRepuestos
             )
         ) { exito, error ->
             if (!exito) {
@@ -765,6 +791,7 @@ class MainActivity : AppCompatActivity() {
         etKilometrajeMant.text.clear()
         etProximoKilometraje.text.clear()
         etCosto.text.clear()
+        etTallerRepuestos.text.clear()
 
         mostrarDocumentos()
         actualizarPanelResumen()
@@ -921,11 +948,11 @@ class MainActivity : AppCompatActivity() {
 
         if (alertas.isEmpty()) {
             val mensaje = TextView(this).apply {
-                text = "✓ Todo en orden. No hay documentos vencidos ni próximos a vencer."
+                text = "✓ Tu garaje está al día. No hay mantenimientos vencidos ni alertas pendientes."
                 textSize = 14f
-                setTextColor(Color.rgb(22, 101, 52))
-                setBackgroundColor(Color.rgb(240, 253, 244))
-                setPadding(20, 22, 20, 22)
+                setTextColor(Color.rgb(6, 95, 70)) // Emerald-800
+                setBackgroundColor(Color.rgb(236, 253, 245)) // Emerald-50
+                setPadding(24, 24, 24, 24)
                 gravity = Gravity.CENTER
             }
 
@@ -939,29 +966,29 @@ class MainActivity : AppCompatActivity() {
 
             val tarjeta = LinearLayout(this).apply {
                 orientation = LinearLayout.VERTICAL
-                setPadding(18, 16, 18, 16)
+                setPadding(20, 20, 20, 20)
                 setBackgroundColor(
                     if (estado == "VENCIDO") {
-                        Color.rgb(254, 242, 242)
+                        Color.rgb(254, 242, 242) // Red-50
                     } else {
-                        Color.rgb(255, 251, 235)
+                        Color.rgb(255, 251, 235) // Amber-50
                     }
                 )
             }
 
             val titulo = TextView(this).apply {
                 text = if (estado == "VENCIDO") {
-                    "⚠ Documento vencido"
+                    "⚠ Vencido"
                 } else {
                     "⏳ Próximo vencimiento"
                 }
 
-                textSize = 15f
+                textSize = 16f
                 setTextColor(
                     if (estado == "VENCIDO") {
-                        Color.rgb(185, 28, 28)
+                        Color.rgb(220, 38, 38) // Red-600
                     } else {
-                        Color.rgb(146, 64, 14)
+                        Color.rgb(217, 119, 6) // Amber-600
                     }
                 )
                 setTypeface(null, android.graphics.Typeface.BOLD)
@@ -1016,8 +1043,8 @@ class MainActivity : AppCompatActivity() {
 
             val titulo = TextView(this).apply {
                 text = placa
-                textSize = 21f
-                setTextColor(Color.rgb(23, 54, 83))
+                textSize = 24f
+                setTextColor(Color.rgb(15, 23, 42)) // Slate-900
                 setTypeface(null, android.graphics.Typeface.BOLD)
             }
 
@@ -1043,7 +1070,8 @@ class MainActivity : AppCompatActivity() {
             val eliminar = Button(this).apply {
                 text = "Eliminar vehículo"
                 setAllCaps(false)
-                setTextColor(Color.rgb(185, 28, 28))
+                setBackgroundColor(Color.TRANSPARENT)
+                setTextColor(Color.rgb(220, 38, 38)) // Red-600
                 setOnClickListener {
                     confirmarEliminarVehiculo(placa)
                 }
@@ -1117,7 +1145,20 @@ class MainActivity : AppCompatActivity() {
 
     private fun mostrarDocumentos() {
         contenedorDocumentos.removeAllViews()
-        tvCantidad.text = "Mi historial (${documentos.size})"
+
+        val filtroSeleccionado = if (::spFiltroPlaca.isInitialized) {
+            spFiltroPlaca.selectedItem?.toString() ?: "Todos los vehículos"
+        } else {
+            "Todos los vehículos"
+        }
+
+        val documentosFiltrados = if (filtroSeleccionado == "Todos los vehículos") {
+            documentos
+        } else {
+            documentos.filter { it.optString("placa") == filtroSeleccionado }
+        }
+
+        tvCantidad.text = "Mi historial (${documentosFiltrados.size})"
 
         val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         formato.isLenient = false
@@ -1134,9 +1175,16 @@ class MainActivity : AppCompatActivity() {
 
         for (indice in documentos.indices) {
             val documento = documentos[indice]
-            val tipo = documento.optString("tipo")
             val placa = documento.optString("placa")
+            
+            // Si hay un filtro y no coincide, saltar este documento
+            if (filtroSeleccionado != "Todos los vehículos" && placa != filtroSeleccionado) {
+                continue
+            }
+
+            val tipo = documento.optString("tipo")
             val fechaTexto = documento.optString("fecha")
+            val tallerRepuestos = documento.optString("taller_repuestos", "")
             val km = documento.optInt("kilometraje", 0)
             val proximoKm = documento.optInt("proximo_kilometraje", 0)
             val costo = documento.optDouble("costo", 0.0)
@@ -1203,8 +1251,8 @@ class MainActivity : AppCompatActivity() {
 
             val titulo = TextView(this).apply {
                 text = "$tipo · $placa"
-                textSize = 18f
-                setTextColor(Color.rgb(23, 54, 83))
+                textSize = 19f
+                setTextColor(Color.rgb(15, 23, 42)) // Slate-900
                 setTypeface(null, android.graphics.Typeface.BOLD)
             }
 
@@ -1221,7 +1269,10 @@ class MainActivity : AppCompatActivity() {
                     if (costo > 0.0) {
                         val formatMoneda = java.text.NumberFormat.getCurrencyInstance(Locale("es", "CO"))
                         formatMoneda.maximumFractionDigits = 0
-                        append("Costo: ${formatMoneda.format(costo)}")
+                        append("Costo: ${formatMoneda.format(costo)}\n")
+                    }
+                    if (tallerRepuestos.isNotEmpty()) {
+                        append("Taller/Repuestos: $tallerRepuestos")
                     }
                 }
                 textSize = 14f
@@ -1236,21 +1287,22 @@ class MainActivity : AppCompatActivity() {
 
                 setTextColor(
                     when {
-                        estado == "Vencido" ->
-                            Color.rgb(185, 28, 28)
+                        estado.contains("Vencido") ->
+                            Color.rgb(220, 38, 38) // Red-600
 
-                        diasRestantes != null && diasRestantes in 0..30 ->
-                            Color.rgb(180, 83, 9)
+                        estado.contains("Próximo") || (diasRestantes != null && diasRestantes in 0..30) ->
+                            Color.rgb(217, 119, 6) // Amber-600
 
-                        else -> Color.rgb(22, 101, 52)
+                        else -> Color.rgb(16, 185, 129) // Emerald-500
                     }
                 )
             }
 
             val eliminar = Button(this).apply {
-                text = "Eliminar documento"
+                text = "Eliminar registro"
                 setAllCaps(false)
-                setTextColor(Color.rgb(185, 28, 28))
+                setBackgroundColor(Color.TRANSPARENT)
+                setTextColor(Color.rgb(220, 38, 38)) // Red-600
                 setOnClickListener {
                     confirmarEliminarDocumento(indice)
                 }

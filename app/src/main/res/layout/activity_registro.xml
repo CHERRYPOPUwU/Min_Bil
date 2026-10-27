@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0F2027"
+    android:background="#1E293B"
     android:fillViewport="true">
 
     <LinearLayout
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="ControlVial"
+            android:text="MiCarro"
             android:textColor="#FFFFFF"
             android:textSize="32sp"
             android:textStyle="bold"
@@ -63,7 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Crea tu cuenta"
-                    android:textColor="#0F2027"
+                    android:textColor="#0F172A"
                     android:textSize="22sp"
                     android:textStyle="bold" />
 
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Regístrate para llevar el control de tus vehículos y documentos."
-                    android:textColor="#78909C"
+                    android:textColor="#64748B"
                     android:textSize="13.5sp"
                     android:layout_marginBottom="24dp" />
 
@@ -81,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Correo electrónico"
-                    android:textColor="#37474F"
+                    android:textColor="#334155"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -95,7 +95,7 @@
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:paddingHorizontal="14dp"
-                    android:textColor="#0F2027"
+                    android:textColor="#0F172A"
                     android:textSize="15sp" />
 
                 <!-- CONTRASEÑA -->
@@ -104,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Contraseña"
-                    android:textColor="#37474F"
+                    android:textColor="#334155"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -118,7 +118,7 @@
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:paddingHorizontal="14dp"
-                    android:textColor="#0F2027"
+                    android:textColor="#0F172A"
                     android:textSize="15sp" />
 
                 <!-- CONFIRMAR CONTRASEÑA -->
@@ -127,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Confirmar contraseña"
-                    android:textColor="#37474F"
+                    android:textColor="#334155"
                     android:textSize="13sp"
                     android:textStyle="bold" />
 
@@ -141,7 +141,7 @@
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:paddingHorizontal="14dp"
-                    android:textColor="#0F2027"
+                    android:textColor="#0F172A"
                     android:textSize="15sp" />
 
                 <!-- BOTÓN REGISTRARSE -->
@@ -150,7 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="54dp"
                     android:layout_marginTop="28dp"
-                    android:backgroundTint="#0288D1"
+                    android:backgroundTint="#2563EB"
                     android:text="Registrarse"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
@@ -166,7 +166,7 @@
                     android:layout_marginTop="18dp"
                     android:gravity="center"
                     android:text="¿Ya tienes cuenta? Inicia sesión"
-                    android:textColor="#0288D1"
+                    android:textColor="#2563EB"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:clickable="true"

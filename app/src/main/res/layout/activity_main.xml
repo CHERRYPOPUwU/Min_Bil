@@ -13,37 +13,36 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- 0: ENCABEZADO -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#0F2027"
+            android:background="#1E293B"
             android:orientation="vertical"
-            android:padding="22dp"
-            android:elevation="4dp"
-            android:layout_marginBottom="8dp">
+            android:padding="24dp"
+            android:elevation="6dp"
+            android:layout_marginBottom="12dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="ControlVial 🚗"
+                android:text="MiCarro 🚗"
                 android:textColor="#FFFFFF"
-                android:textSize="28sp"
+                android:textSize="32sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Administra tus vehículos y documentos."
-                android:textColor="#B0BEC5"
+                android:layout_marginTop="6dp"
+                android:text="Tu historial vehicular en un solo lugar"
+                android:textColor="#94A3B8"
                 android:textSize="14sp" />
 
             <View
-                android:layout_width="40dp"
+                android:layout_width="48dp"
                 android:layout_height="4dp"
-                android:layout_marginTop="14dp"
-                android:background="#00B4DB" />
+                android:layout_marginTop="16dp"
+                android:background="#3B82F6" />
 
         </LinearLayout>
 
@@ -57,26 +56,26 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Resumen general"
-            android:textColor="#0F2027"
-            android:textSize="20sp"
+            android:textColor="#0F172A"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <!-- 2: Subtítulo Resumen -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Consulta rápidamente el estado de tu información."
-            android:textColor="#78909C"
-            android:textSize="13sp" />
+            android:layout_marginTop="4dp"
+            android:text="Consulta rápidamente el estado de tu garaje."
+            android:textColor="#64748B"
+            android:textSize="14sp" />
 
         <!-- 3: TARJETA VEHÍCULOS -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardUseCompatPadding="true">
 
@@ -90,26 +89,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="🚗  Vehículos registrados"
-                    android:textColor="#0288D1"
-                    android:textSize="14sp"
+                    android:textColor="#3B82F6"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvTotalVehiculos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="8dp"
                     android:text="0"
-                    android:textColor="#0F2027"
-                    android:textSize="32sp"
+                    android:textColor="#0F172A"
+                    android:textSize="36sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Vehículos registrados en ControlVial"
-                    android:textColor="#90A4AE"
-                    android:textSize="12sp" />
+                    android:text="Vehículos activos en MiCarro"
+                    android:textColor="#94A3B8"
+                    android:textSize="13sp" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -118,9 +117,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
+            android:layout_marginTop="6dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardUseCompatPadding="true">
 
@@ -133,19 +132,19 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="📄  Documentos registrados"
-                    android:textColor="#0288D1"
-                    android:textSize="14sp"
+                    android:text="📄  Servicios y Documentos"
+                    android:textColor="#3B82F6"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvTotalDocumentos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="8dp"
                     android:text="0"
-                    android:textColor="#0F2027"
-                    android:textSize="32sp"
+                    android:textColor="#0F172A"
+                    android:textSize="36sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -154,17 +153,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="Gastos: $0"
-                    android:textColor="#388E3C"
-                    android:textSize="14sp"
+                    android:textColor="#10B981"
+                    android:textSize="15sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Servicios y documentos registrados"
-                    android:textColor="#90A4AE"
-                    android:textSize="12sp" />
+                    android:layout_marginTop="4dp"
+                    android:text="Historial asociado a tus vehículos"
+                    android:textColor="#94A3B8"
+                    android:textSize="13sp" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -173,7 +172,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal">
 
             <!-- PRÓXIMOS -->
@@ -182,9 +181,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFF8E1"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FFFBEB"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -197,26 +196,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="⏳ Por vencer"
-                        android:textColor="#F57C00"
-                        android:textSize="13sp"
+                        android:textColor="#D97706"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvProximosVencer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="8dp"
                         android:text="0"
-                        android:textColor="#E65100"
-                        android:textSize="28sp"
+                        android:textColor="#B45309"
+                        android:textSize="32sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Próximos 30 días"
-                        android:textColor="#EF6C00"
-                        android:textSize="11sp" />
+                        android:textColor="#D97706"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -227,9 +226,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFEBEE"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="#FEF2F2"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -242,26 +241,26 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="⚠️ Vencidos"
-                        android:textColor="#D32F2F"
-                        android:textSize="13sp"
+                        android:textColor="#DC2626"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tvVencidos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="8dp"
                         android:text="0"
-                        android:textColor="#B71C1C"
-                        android:textSize="28sp"
+                        android:textColor="#991B1B"
+                        android:textSize="32sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Requieren atención"
-                        android:textColor="#C62828"
-                        android:textSize="11sp" />
+                        android:textColor="#DC2626"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -272,10 +271,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Alertas de documentación"
-            android:textColor="#0F2027"
-            android:textSize="18sp"
+            android:layout_marginTop="24dp"
+            android:text="Tablero de Alertas"
+            android:textColor="#0F172A"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <!-- 7: Contenedor Alertas -->
@@ -294,28 +293,28 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Mi garaje"
-            android:textColor="#0F2027"
-            android:textSize="20sp"
+            android:layout_marginTop="32dp"
+            android:text="Mi Garaje"
+            android:textColor="#0F172A"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <!-- 9: Subtítulo Mi garaje -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Registra los vehículos que deseas controlar."
-            android:textColor="#78909C"
-            android:textSize="13sp" />
+            android:layout_marginTop="4dp"
+            android:text="Gestiona y registra los vehículos a controlar."
+            android:textColor="#64748B"
+            android:textSize="14sp" />
 
         <!-- 10: REGISTRO VEHÍCULO (Formulario) -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardUseCompatPadding="true">
 
@@ -328,9 +327,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="01 · Datos del vehículo"
-                    android:textColor="#0288D1"
-                    android:textSize="16sp"
+                    android:text="01 · Añadir Vehículo"
+                    android:textColor="#3B82F6"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <EditText
@@ -450,15 +449,15 @@
                 <Button
                     android:id="@+id/btnGuardarVehiculo"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="18dp"
-                    android:backgroundTint="#0288D1"
-                    android:text="＋ Registrar vehículo"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="24dp"
+                    android:backgroundTint="#2563EB"
+                    android:text="＋ Añadir a mi garaje"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    app:cornerRadius="10dp" />
+                    app:cornerRadius="12dp" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -481,8 +480,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Mis vehículos (0)"
-                android:textColor="#0F2027"
-                android:textSize="18sp"
+                android:textColor="#0F172A"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -502,28 +501,28 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:text="Agendamiento y Documentos"
-            android:textColor="#0F2027"
-            android:textSize="20sp"
+            android:textColor="#0F172A"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
         <!-- 14: Subtítulo Documentación -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="Asocia cada mantenimiento o documento a tu vehículo."
-            android:textColor="#78909C"
-            android:textSize="13sp" />
+            android:layout_marginTop="4dp"
+            android:text="Asocia mantenimientos y pólizas a tu vehículo."
+            android:textColor="#64748B"
+            android:textSize="14sp" />
 
         <!-- 15: REGISTRO DOCUMENTO (Formulario) -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardUseCompatPadding="true">
 
@@ -536,9 +535,9 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="02 · Nuevo agendamiento"
-                    android:textColor="#0288D1"
-                    android:textSize="16sp"
+                    android:text="02 · Nuevo Agendamiento"
+                    android:textColor="#3B82F6"
+                    android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -619,18 +618,30 @@
                     android:paddingHorizontal="12dp"
                     android:textSize="14sp" />
 
+                <EditText
+                    android:id="@+id/etTallerRepuestos"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@android:drawable/editbox_background_normal"
+                    android:hint="Taller / Repuestos (Opcional)"
+                    android:inputType="textCapSentences"
+                    android:singleLine="true"
+                    android:paddingHorizontal="12dp"
+                    android:textSize="14sp" />
+
                 <Button
                     android:id="@+id/btnGuardar"
                     android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="18dp"
-                    android:backgroundTint="#0288D1"
-                    android:text="＋ Guardar agendamiento"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="24dp"
+                    android:backgroundTint="#2563EB"
+                    android:text="＋ Guardar historial"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
-                    app:cornerRadius="10dp" />
+                    app:cornerRadius="12dp" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -653,15 +664,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Mi historial (0)"
-                android:textColor="#0F2027"
-                android:textSize="18sp"
+                android:textColor="#0F172A"
+                android:textSize="20sp"
                 android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/spFiltroPlaca"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="12dp"
+                android:background="@android:drawable/btn_dropdown" />
 
             <LinearLayout
                 android:id="@+id/contenedorDocumentos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:orientation="vertical" />
 
         </LinearLayout>
@@ -671,12 +689,12 @@
             android:id="@+id/piePagina"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:gravity="center"
-            android:padding="12dp"
-            android:text="ControlVial · Tu vehículo al día"
-            android:textColor="#B0BEC5"
-            android:textSize="12sp" />
+            android:padding="16dp"
+            android:text="MiCarro · Tu historial vehicular"
+            android:textColor="#94A3B8"
+            android:textSize="13sp" />
 
     </LinearLayout>
 
