@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_inicio"
+        android:icon="@drawable/ic_nav_inicio"
+        android:title="@string/nav_inicio" />
+    <item
+        android:id="@+id/nav_vehiculos"
+        android:icon="@drawable/ic_nav_vehiculos"
+        android:title="@string/nav_vehiculos" />
+    <item
+        android:id="@+id/nav_plan"
+        android:icon="@drawable/ic_nav_plan"
+        android:title="@string/nav_plan" />
+    <item
+        android:id="@+id/nav_historial"
+        android:icon="@drawable/ic_nav_historial"
+        android:title="@string/nav_historial" />
+    <item
+        android:id="@+id/nav_alertas"
+        android:icon="@drawable/ic_nav_alertas"
+        android:title="@string/nav_alertas" />
+</menu>

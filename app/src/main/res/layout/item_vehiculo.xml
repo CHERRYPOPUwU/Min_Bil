@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Tarjeta"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/ivVehFoto"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginEnd="12dp"
+                android:background="@color/neutral_bg"
+                android:contentDescription="@string/foto_vehiculo"
+                android:scaleType="center"
+                android:src="@drawable/ic_nav_vehiculos"
+                app:shapeAppearanceOverlay="@style/FotoRedondeada" />
+
+            <TextView
+                android:id="@+id/tvVehPlaca"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvVehPrincipal"
+                style="@style/Etiqueta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary_container"
+                android:text="@string/etiqueta_principal"
+                android:textColor="@color/primary_dark" />
+
+            <TextView
+                android:id="@+id/tvVehArchivado"
+                style="@style/Etiqueta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/neutral_bg"
+                android:text="@string/etiqueta_archivado"
+                android:textColor="@color/text_secondary"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvVehDetalle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="@style/Texto.Cuerpo" />
+
+        <TextView
+            android:id="@+id/tvVehPendiente"
+            style="@style/Etiqueta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnActualizarKm"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/actualizar_km" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnHacerPrincipal"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hacer_principal" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReactivar"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reactivar"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btnMas"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/mas_opciones"
+                android:src="@drawable/ic_mas"
+                app:tint="@color/text_secondary" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

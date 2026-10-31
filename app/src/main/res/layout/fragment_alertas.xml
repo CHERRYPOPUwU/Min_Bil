@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/alertas_titulo"
+            android:textAppearance="@style/Texto.Titulo"
+            android:accessibilityHeading="true" />
+
+        <TextView
+            android:id="@+id/tvResumenAlertas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:textAppearance="@style/Texto.Cuerpo" />
+
+        <TextView
+            android:id="@+id/tvSinAlertasLista"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/success_bg"
+            android:padding="16dp"
+            android:text="@string/sin_alertas"
+            android:textColor="@color/success"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:id="@+id/grupoPospuestas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tvPospuestas"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAppearance="@style/Texto.Cuerpo" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnQuitarPospuestas"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mostrar_todas" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contenedorAlertas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </LinearLayout>
+</ScrollView>

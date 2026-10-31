@@ -4,7 +4,9 @@ package com.example.controlvial
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
@@ -23,6 +25,20 @@ class RecordatorioWorker(
     context: Context,
     params: WorkerParameters
 ) : Worker(context, params) {
+
+    /** RF-30: al tocar el aviso se abre la app en la pestaña de alertas. */
+    private fun abrirAlertas(context: Context, codigo: Int): PendingIntent {
+        val intent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(MainActivity.EXTRA_PESTANA, MainActivity.PESTANA_ALERTAS)
+        }
+        return PendingIntent.getActivity(
+            context,
+            codigo,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+    }
 
     override fun doWork(): Result {
         val context = applicationContext
@@ -53,11 +69,13 @@ class RecordatorioWorker(
             return Result.success()
         }
 
-        val preferencias = context.getSharedPreferences(
-            "ControlVial",
-            Context.MODE_PRIVATE
-        )
+        // Datos del usuario con sesión iniciada (sin sesión, no hay nada que avisar).
+        val repositorio = RepositorioMiCarro(context)
+        val preferencias = repositorio.preferenciasActuales()
 
+        // -----------------------------------------------------------
+        // 1) Documentos (SOAT, Tecnomecánica, etc.): avisos a 30, 15, 7 y 0 días
+        // -----------------------------------------------------------
         val contenido = preferencias.getString("documentos", "[]")
         val documentos = try {
             JSONArray(contenido)
@@ -84,11 +102,17 @@ class RecordatorioWorker(
             val tipo = documento.optString("tipo")
             val fecha = documento.optString("fecha")
 
+            // Los servicios (aceite, frenos...) no vencen por fecha: solo los documentos.
+            if (documento.has("actividad_id") || !Catalogo.tieneVencimiento(tipo)) continue
+
             val vencimiento: Date = try {
                 formato.parse(fecha) ?: continue
             } catch (_: Exception) {
                 continue
             }
+
+            // RN-08: una alerta pospuesta no avisa hasta que termine la posposición.
+            if (repositorio.estaPospuesta(documento.optString("id"))) continue
 
             val diasRestantes = TimeUnit.MILLISECONDS.toDays(
                 vencimiento.time - hoy.time
@@ -111,6 +135,8 @@ class RecordatorioWorker(
                 else -> continue
             }
 
+            val idNotificacion = clave.hashCode() + diasRestantes
+
             val notificacion = NotificationCompat.Builder(context, canalId)
                 .setSmallIcon(android.R.drawable.ic_dialog_info)
                 .setContentTitle("$tipo · $placa")
@@ -119,11 +145,10 @@ class RecordatorioWorker(
                     NotificationCompat.BigTextStyle()
                         .bigText("$mensaje Fecha: $fecha")
                 )
+                .setContentIntent(abrirAlertas(context, idNotificacion))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true)
                 .build()
-
-            val idNotificacion = clave.hashCode() + diasRestantes
 
             try {
                 NotificationManagerCompat.from(context)
@@ -135,6 +160,44 @@ class RecordatorioWorker(
             } catch (_: SecurityException) {
                 // El usuario puede haber desactivado los permisos.
             }
+        }
+
+        // -----------------------------------------------------------
+        // 2) Plan de mantenimiento: un aviso cuando una actividad pasa a
+        //    "próxima" y otro cuando pasa a "vencida" (RF-28, RF-29)
+        // -----------------------------------------------------------
+        try {
+            repositorio.alertas()
+                .filter { it.clave.isNotEmpty() }
+                .forEach { alerta ->
+                    val claveAviso = "aviso_${alerta.clave}"
+                    if (preferencias.getBoolean(claveAviso, false)) return@forEach
+
+                    val idNotificacion = alerta.clave.hashCode()
+                    val notificacion = NotificationCompat.Builder(context, canalId)
+                        .setSmallIcon(android.R.drawable.ic_dialog_info)
+                        .setContentTitle(alerta.titulo)
+                        .setContentText(alerta.detalle.lineSequence().firstOrNull() ?: "")
+                        .setStyle(NotificationCompat.BigTextStyle().bigText(alerta.detalle))
+                        .setContentIntent(abrirAlertas(context, idNotificacion))
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true)
+                        .build()
+
+                    try {
+                        NotificationManagerCompat.from(context)
+                            .notify(idNotificacion, notificacion)
+
+                        preferencias.edit()
+                            .putBoolean(claveAviso, true)
+                            .apply()
+                    } catch (_: SecurityException) {
+                        // El usuario puede haber desactivado los permisos.
+                    }
+                }
+        } catch (e: Exception) {
+            // Un error en el plan no debe impedir los avisos de documentos.
+            Bitacora.error("Avisos", "Falló la revisión del plan", e)
         }
 
         return Result.success()

@@ -1,3 +1,440 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ControlVial</string>
+    <string name="app_name">Min Bil</string>
+    <string name="cero">0</string>
+
+    <!-- Navegación -->
+    <string name="nav_inicio">Inicio</string>
+    <string name="nav_vehiculos">Vehículos</string>
+    <string name="nav_historial">Historial</string>
+    <string name="nav_alertas">Alertas</string>
+
+    <!-- Acciones generales -->
+    <string name="cancelar">Cancelar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="salir">Salir</string>
+    <string name="cerrar_sesion">Cerrar sesión</string>
+    <string name="cerrar_sesion_titulo">Cerrar sesión</string>
+    <string name="cerrar_sesion_mensaje">¿Deseas salir de tu cuenta de Min Bil?</string>
+    <string name="error_desconocido">Error desconocido</string>
+
+    <!-- Inicio -->
+    <string name="inicio_subtitulo">Control de mantenimiento vehicular</string>
+    <string name="vehiculo_principal">VEHÍCULO PRINCIPAL</string>
+    <string name="sin_detalle">Sin detalles del vehículo</string>
+    <string name="km_formato">%1$s km</string>
+    <string name="estado_al_dia">Todo al día</string>
+    <string name="estado_sin_registros">Sin registros todavía</string>
+    <plurals name="n_vencidas">
+        <item quantity="one">%d vencida</item>
+        <item quantity="other">%d vencidas</item>
+    </plurals>
+    <plurals name="n_proximas">
+        <item quantity="one">%d próxima a vencer</item>
+        <item quantity="other">%d próximas a vencer</item>
+    </plurals>
+    <string name="sin_vehiculos_titulo">Aún no tienes vehículos</string>
+    <string name="sin_vehiculos_mensaje">Registra tu primer vehículo para empezar a controlar su mantenimiento.</string>
+    <string name="agregar_vehiculo">Agregar vehículo</string>
+    <string name="stat_vehiculos">Vehículos</string>
+    <string name="stat_proximos">Por vencer</string>
+    <string name="stat_vencidos">Vencidos</string>
+    <string name="alertas_titulo">Alertas</string>
+    <string name="sin_alertas">Todo está al día. No hay vencimientos ni alertas pendientes.</string>
+    <string name="ver_todas_alertas">Ver todas las alertas</string>
+    <string name="gastos_titulo">Gastos</string>
+    <string name="gasto_total">Total registrado</string>
+    <string name="sin_gastos">Aún no hay gastos registrados.</string>
+
+    <!-- Alertas -->
+    <string name="resumen_alertas">%1$s · %2$s</string>
+    <string name="alerta_titulo_vencido">Vencido</string>
+    <string name="alerta_titulo_proximo">Próximo a vencer</string>
+    <string name="alerta_vencio_fecha">Venció el %1$s</string>
+    <string name="alerta_vence_hoy">Vence hoy (%1$s)</string>
+    <string name="alerta_vence_manana">Vence mañana (%1$s)</string>
+    <string name="alerta_vence_en_dias">Vence en %1$d días (%2$s)</string>
+    <string name="alerta_vencio_km">Venció a los %1$s km (actual: %2$s km)</string>
+    <string name="alerta_vence_km">Vence a los %1$s km (faltan %2$s km)</string>
+    <string name="titulo_registro">%1$s · %2$s</string>
+
+    <!-- Vehículos -->
+    <string name="mis_vehiculos_n">Mis vehículos (%1$d)</string>
+    <string name="nuevo_vehiculo">Nuevo vehículo</string>
+    <string name="guardar_vehiculo">Guardar vehículo</string>
+    <string name="sin_vehiculos_lista">Todavía no has registrado vehículos. Pulsa «Agregar vehículo».</string>
+    <string name="etiqueta_principal">Principal</string>
+    <string name="hacer_principal">Hacer principal</string>
+    <string name="vehiculo_registrado">Vehículo registrado correctamente</string>
+    <string name="vehiculo_ahora_principal">%1$s ahora es tu vehículo principal</string>
+    <string name="vehiculo_eliminado">Vehículo eliminado</string>
+    <string name="eliminar_vehiculo_titulo">Eliminar vehículo</string>
+    <string name="eliminar_vehiculo_mensaje">¿Deseas eliminar el vehículo %1$s?\n\nTambién se eliminarán sus registros.</string>
+    <string name="hint_placa">Placa (ej. ABC123 o ABC12D)</string>
+    <string name="hint_tipo_vehiculo">Tipo de vehículo</string>
+    <string name="hint_marca">Marca</string>
+    <string name="hint_linea">Línea</string>
+    <string name="hint_anio">Año del modelo</string>
+    <string name="hint_color">Color (opcional)</string>
+    <string name="hint_kilometraje">Kilometraje actual</string>
+    <string name="error_placa_formato">Formato inválido (ej. ABC123 o ABC12D)</string>
+    <string name="error_placa_duplicada">Ya existe un vehículo con esa placa</string>
+    <string name="error_marca">Selecciona la marca</string>
+    <string name="error_color">Solo letras y espacios (ej. Azul Fiord)</string>
+    <string name="det_tipo">Tipo: %1$s</string>
+    <string name="det_vehiculo">Vehículo: %1$s</string>
+    <string name="det_anio">Año: %1$s</string>
+    <string name="det_color">Color: %1$s</string>
+    <string name="det_km">Kilometraje: %1$s km</string>
+    <string name="det_registros">Registros: %1$d</string>
+
+    <!-- Historial -->
+    <string name="historial_n">Mi historial (%1$d)</string>
+    <string name="nuevo_registro">Nuevo registro</string>
+    <string name="nuevo_registro_titulo">Nuevo documento o servicio</string>
+    <string name="guardar_registro">Guardar registro</string>
+    <string name="sin_registros">No hay registros para mostrar.</string>
+    <string name="hint_vehiculo">Vehículo</string>
+    <string name="hint_tipo_registro">Documento o servicio</string>
+    <string name="hint_fecha_vencimiento">Fecha de vencimiento</string>
+    <string name="hint_fecha_servicio">Fecha del servicio</string>
+    <string name="hint_km_servicio">Kilometraje actual</string>
+    <string name="hint_proximo_km">Próximo servicio a los (km, opcional)</string>
+    <string name="hint_costo">Costo (opcional)</string>
+    <string name="hint_taller">Taller o repuestos (opcional)</string>
+    <string name="hint_filtrar_vehiculo">Filtrar por vehículo</string>
+    <string name="todos_vehiculos">Todos los vehículos</string>
+    <string name="registrar_primero_vehiculo">Primero registra al menos un vehículo</string>
+    <string name="elige_vehiculo">Elige un vehículo</string>
+    <string name="error_fecha_vacia">Selecciona una fecha</string>
+    <string name="error_fecha_invalida">Fecha inválida</string>
+    <string name="registro_guardado">Registro guardado correctamente</string>
+    <string name="registro_eliminado">Registro eliminado</string>
+    <string name="eliminar_registro_titulo">Eliminar registro</string>
+    <string name="eliminar_registro_mensaje">¿Deseas eliminar «%1$s» del vehículo %2$s?</string>
+    <string name="km_menor_titulo">Kilometraje menor al registrado</string>
+    <string name="km_menor_mensaje">Ingresaste %1$s km, pero el vehículo ya tiene %2$s km. ¿Deseas guardar de todas formas?</string>
+    <string name="guardar_igual">Guardar de todas formas</string>
+    <string name="det_vencimiento">Vencimiento: %1$s</string>
+    <string name="det_fecha_servicio">Fecha del servicio: %1$s</string>
+    <string name="det_km_servicio">Kilometraje en el servicio: %1$s km</string>
+    <string name="det_proximo_km">Próximo servicio a los: %1$s km</string>
+    <string name="det_costo">Costo: %1$s</string>
+    <string name="det_taller">Taller o repuestos: %1$s</string>
+    <string name="estado_vencido">Vencido</string>
+    <string name="estado_vencido_km">Vencido por kilometraje</string>
+    <string name="estado_vence_hoy">Vence hoy</string>
+    <string name="estado_vence_manana">Vence mañana</string>
+    <string name="estado_vence_en_dias">Vence en %1$d días</string>
+    <string name="estado_proximo_km">Próximo por kilometraje</string>
+    <string name="estado_vigente">Vigente</string>
+    <string name="estado_registrado">Servicio registrado</string>
+
+    <!-- Errores de sincronización con la nube -->
+    <string name="error_nube_guardar_vehiculo">Guardado en el teléfono. No se pudo sincronizar el vehículo con la nube: %1$s</string>
+    <string name="error_nube_guardar_registro">Guardado en el teléfono. No se pudo sincronizar el registro con la nube: %1$s</string>
+    <string name="error_nube_eliminar">Eliminado del teléfono. No se pudo actualizar la nube: %1$s</string>
+    <!-- Lote 2: kilometraje, editar, archivar, borrar datos -->
+    <string name="guardar">Guardar</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="corregir">Corregir</string>
+    <string name="editar">Editar</string>
+    <string name="archivar">Archivar</string>
+    <string name="reactivar">Reactivar</string>
+    <string name="mas_opciones">Más opciones</string>
+    <string name="mostrar_mas">Mostrar más registros</string>
+    <string name="etiqueta_archivado">Archivado</string>
+    <string name="archivados_n">Archivados (%1$d)</string>
+    <string name="actualizar_km">Actualizar km</string>
+    <string name="actualizar_km_titulo">Actualizar kilometraje · %1$s</string>
+    <string name="km_registrado_actual">Kilometraje registrado: %1$s km</string>
+    <string name="hint_lectura_km">Lectura del odómetro (km)</string>
+    <string name="hint_fecha_lectura">Fecha de la lectura</string>
+    <string name="error_lectura_km">Escribe un kilometraje mayor que cero</string>
+    <string name="error_lectura_futura">La fecha de la lectura no puede ser futura</string>
+    <string name="km_actualizado">Kilometraje actualizado</string>
+    <string name="ver_lecturas">Ver lecturas de kilometraje</string>
+    <string name="lecturas_titulo">Lecturas · %1$s</string>
+    <string name="lectura_item">%1$s · %2$s km</string>
+    <string name="sin_lecturas">Aún no hay lecturas de kilometraje para este vehículo.</string>
+    <string name="editar_titulo">Editar vehículo · %1$s</string>
+    <string name="editar_nota">La placa y el tipo de vehículo no se pueden cambiar. El kilometraje se actualiza con «Actualizar km».</string>
+    <string name="error_anio">Escribe un año entre 1960 y %1$d</string>
+    <string name="vehiculo_actualizado">Vehículo actualizado</string>
+    <string name="archivar_titulo">Archivar vehículo</string>
+    <string name="archivar_mensaje">El vehículo %1$s dejará de aparecer en tus listas y formularios, pero conservará su historial. Podrás reactivarlo cuando quieras.</string>
+    <string name="vehiculo_archivado">Vehículo archivado</string>
+    <string name="vehiculo_reactivado">Vehículo reactivado</string>
+    <string name="borrar_datos">Borrar todos mis datos</string>
+    <string name="borrar_datos_titulo">Borrar todos los datos</string>
+    <string name="borrar_datos_mensaje">Se eliminarán de forma definitiva todos tus vehículos, documentos, servicios y lecturas, tanto en este teléfono como en la nube. Esta acción no se puede deshacer.</string>
+    <string name="borrar_datos_confirmar">Borrar todo</string>
+    <string name="datos_borrados">Todos tus datos fueron eliminados</string>
+    <!-- Lote 3: plan de mantenimiento -->
+    <string name="nav_plan">Plan</string>
+    <string name="plan_titulo">Plan de mantenimiento</string>
+    <string name="plan_subtitulo">Programa los servicios por fecha, por kilometraje o por ambos.</string>
+    <string name="nueva_actividad">Nueva actividad</string>
+    <string name="nueva_actividad_titulo">Nueva actividad</string>
+    <string name="editar_actividad_titulo">Editar actividad</string>
+    <string name="administrar_categorias">Administrar categorías</string>
+    <string name="sin_actividades">No hay actividades en el plan. Pulsa «Nueva actividad» o usa una plantilla.</string>
+    <string name="hint_plantilla">Plantilla (opcional)</string>
+    <string name="sin_plantilla">Sin plantilla</string>
+    <string name="hint_nombre_actividad">Nombre de la actividad</string>
+    <string name="hint_categoria">Categoría</string>
+    <string name="hint_descripcion">Descripción (opcional)</string>
+    <string name="hint_proxima_fecha">Próxima fecha (opcional)</string>
+    <string name="quitar_fecha">Quitar fecha</string>
+    <string name="hint_repetir_dias">Repetir cada (días, opcional)</string>
+    <string name="hint_proximo_km_plan">Próximo kilometraje (opcional)</string>
+    <string name="hint_repetir_km">Repetir cada (km, opcional)</string>
+    <string name="hint_anticipacion_dias">Avisar con anticipación de (días)</string>
+    <string name="hint_anticipacion_km">Avisar con anticipación de (km)</string>
+    <string name="alertas_activadas">Alertas activadas</string>
+    <string name="registrar_servicio">Registrar servicio</string>
+    <string name="registrar_servicio_titulo">Servicio realizado · %1$s</string>
+    <string name="servicio_info">Escribe los datos reales del servicio. El siguiente vencimiento se calcula desde esta fecha y este kilometraje.</string>
+    <string name="servicio_registrado">Servicio registrado. Se calculó el siguiente vencimiento.</string>
+    <string name="pausar">Pausar</string>
+    <string name="renombrar">Renombrar</string>
+    <string name="agregar">Agregar</string>
+    <string name="plan_estado_al_dia">Al día</string>
+    <string name="plan_estado_proxima">Próxima</string>
+    <string name="plan_estado_vencida">Vencida</string>
+    <string name="plan_estado_sin_programacion">Sin programación</string>
+    <string name="plan_estado_pausada">Pausada</string>
+    <string name="plan_proxima_fecha">Próxima fecha: %1$s</string>
+    <string name="plan_en_dias"> (en %1$d días)</string>
+    <string name="plan_hace_dias"> (hace %1$d días)</string>
+    <string name="plan_hoy"> (hoy)</string>
+    <string name="plan_proximo_km">Próximo kilometraje: %1$s km</string>
+    <string name="plan_faltan_km"> (faltan %1$s km)</string>
+    <string name="plan_superado_km"> (superado por %1$s km)</string>
+    <string name="plan_sin_programacion">Sin fecha ni kilometraje programados</string>
+    <string name="plan_repite">Se repite cada %1$s</string>
+    <string name="plan_cada_dias">%1$d días</string>
+    <string name="plan_cada_km">%1$s km</string>
+    <string name="plan_ultimo_servicio">Último servicio: %1$s (%2$s km)</string>
+    <string name="plan_alertas_desactivadas">Alertas desactivadas</string>
+    <string name="error_nombre_actividad">Escribe el nombre de la actividad</string>
+    <string name="error_categoria">Elige una categoría</string>
+    <string name="error_fecha_servicio_futura">La fecha de realización no puede ser futura</string>
+    <string name="error_km_requerido">Esta actividad se repite por kilometraje: escribe el kilometraje del servicio</string>
+    <string name="actividad_guardada">Actividad guardada</string>
+    <string name="actividad_eliminada">Actividad eliminada</string>
+    <string name="actividad_pausada">Actividad pausada</string>
+    <string name="actividad_reactivada">Actividad reactivada</string>
+    <string name="actividad_eliminar_titulo">Eliminar actividad</string>
+    <string name="actividad_eliminar_mensaje">¿Deseas eliminar la actividad «%1$s»?</string>
+    <string name="actividad_con_historial">Esta actividad ya tiene servicios registrados en el historial, por eso no se puede eliminar. Puedes pausarla para que deje de generar alertas.</string>
+    <string name="categorias_titulo">Categorías</string>
+    <string name="categoria_nueva">Nueva categoría</string>
+    <string name="categoria_renombrar">Renombrar categoría</string>
+    <string name="hint_nombre_categoria">Nombre de la categoría</string>
+    <string name="categoria_invalida">El nombre está vacío o ya existe</string>
+    <string name="categoria_en_uso">No se puede eliminar: hay actividades que usan esta categoría</string>
+
+    <string-array name="categorias_iniciales">
+        <item>Aceite</item>
+        <item>Filtros</item>
+        <item>Frenos</item>
+        <item>Llantas</item>
+        <item>Batería</item>
+        <item>Refrigeración</item>
+        <item>Suspensión</item>
+        <item>Transmisión</item>
+        <item>Otros</item>
+    </string-array>
+
+    <!-- Plantillas: nombre|categoría|cada cuántos km|cada cuántos días. Son valores de referencia. -->
+    <string-array name="plantillas_plan">
+        <item>Cambio de aceite|Aceite|5000|180</item>
+        <item>Cambio de filtro de aceite|Filtros|5000|180</item>
+        <item>Cambio de filtro de aire|Filtros|10000|365</item>
+        <item>Revisión de frenos|Frenos|10000|180</item>
+        <item>Rotación y alineación de llantas|Llantas|10000|180</item>
+        <item>Revisión de la batería|Batería|0|365</item>
+        <item>Cambio de refrigerante|Refrigeración|40000|730</item>
+        <item>Revisión de la suspensión|Suspensión|20000|365</item>
+        <item>Cambio de aceite de transmisión|Transmisión|40000|730</item>
+    </string-array>
+    <!-- Lote 4: registro completo, repuestos y resumen de gastos -->
+    <string name="vista_registros">Registros</string>
+    <string name="vista_repuestos">Repuestos</string>
+    <string name="vista_gastos">Gastos</string>
+    <string name="hint_clase">Tipo de mantenimiento</string>
+    <string name="hint_descripcion_servicio">Descripción del servicio</string>
+    <string name="hint_mano_obra">Mano de obra</string>
+    <string name="hint_costo_repuestos">Costo de repuestos</string>
+    <string name="hint_otros_costos">Otros costos</string>
+    <string name="hint_costo_total">Costo total (se calcula solo; puedes ajustarlo)</string>
+    <string name="guardar_cambios">Guardar cambios</string>
+    <string name="editar_registro_titulo">Editar registro</string>
+    <string name="registro_actualizado">Registro actualizado</string>
+    <string name="error_descripcion">Describe el servicio realizado</string>
+    <string name="error_km_servicio">Escribe el kilometraje del servicio</string>
+    <string name="det_clase">Mantenimiento: %1$s</string>
+    <string name="det_desglose">Mano de obra: %1$s · Repuestos: %2$s · Otros: %3$s</string>
+    <string name="repuestos_n">Repuestos (%1$d)</string>
+
+    <string name="repuestos_titulo">Repuestos instalados</string>
+    <string name="repuestos_subtitulo">Qué repuestos tiene cada vehículo y en qué mantenimiento se registraron.</string>
+    <string name="mostrar_retirados">Mostrar también los retirados</string>
+    <string name="sin_repuestos">No hay repuestos para mostrar. Agrégalos desde un servicio del historial con el botón «Repuestos».</string>
+    <string name="repuestos_servicio_titulo">Repuestos del servicio</string>
+    <string name="agregar_repuesto">Agregar repuesto</string>
+    <string name="sin_repuestos_servicio">Este servicio todavía no tiene repuestos registrados.</string>
+    <string name="repuesto_item">%1$s ×%2$d · %3$s</string>
+    <string name="repuesto_retirado_sufijo"> (retirado)</string>
+    <string name="repuesto_nombre_cantidad">%1$s ×%2$d</string>
+    <string name="marcar_retirado">Marcar como retirado</string>
+    <string name="reinstalar">Marcar como instalado</string>
+    <string name="repuesto_eliminado">Repuesto eliminado</string>
+    <string name="repuesto_guardado">Repuesto guardado. El costo del servicio se actualizó.</string>
+    <string name="error_rep_nombre">Escribe el nombre del repuesto</string>
+    <string name="error_rep_cantidad">La cantidad debe ser al menos 1</string>
+    <string name="error_rep_valor">Escribe el valor unitario</string>
+    <string name="hint_rep_nombre">Nombre del repuesto</string>
+    <string name="hint_rep_marca">Marca (opcional)</string>
+    <string name="hint_rep_referencia">Referencia (opcional)</string>
+    <string name="hint_rep_cantidad">Cantidad</string>
+    <string name="hint_rep_valor">Valor unitario</string>
+    <string name="hint_rep_proveedor">Proveedor (opcional)</string>
+    <string name="hint_rep_fecha">Fecha de instalación</string>
+    <string name="hint_rep_garantia_meses">Garantía en meses (opcional)</string>
+    <string name="hint_rep_garantia_km">Garantía en kilómetros (opcional)</string>
+    <string name="hint_rep_observaciones">Observaciones (opcional)</string>
+    <string name="rep_proveedor">Proveedor: %1$s</string>
+    <string name="rep_valor">Valor total: %1$s</string>
+    <string name="rep_instalado_el">Instalado el %1$s</string>
+    <string name="rep_en_mantenimiento">Registrado en: %1$s (%2$s)</string>
+    <string name="rep_garantia_hasta_fecha">Garantía hasta el %1$s</string>
+    <string name="rep_garantia_hasta_km">Garantía hasta los %1$s km (actual: %2$s km)</string>
+    <string name="garantia_vigente">Garantía vigente</string>
+    <string name="garantia_vencida">Garantía vencida</string>
+    <string name="garantia_sin">Sin garantía</string>
+
+    <string name="gastos_resumen_titulo">Resumen de gastos</string>
+    <string name="hint_periodo">Periodo</string>
+    <string name="gasto_total_periodo">TOTAL DEL PERIODO</string>
+    <string name="sin_gastos_periodo">No hay gastos registrados en este periodo.</string>
+    <string name="gastos_por_vehiculo">Por vehículo</string>
+    <string name="gastos_por_categoria">Por categoría</string>
+    <string name="gastos_por_mes">Por mes</string>
+    <string name="gasto_fila_monto">%1$s · %2$d %%</string>
+    <string-array name="periodos_gastos">
+        <item>Todo el tiempo</item>
+        <item>Este mes</item>
+        <item>Últimos 3 meses</item>
+        <item>Este año</item>
+    </string-array>
+    <!-- Lote 5: posponer alertas, filtros avanzados y datos opcionales del vehículo -->
+    <string name="posponer">Posponer</string>
+    <string name="posponer_titulo">Posponer aviso: %1$s</string>
+    <string name="posponer_1_dia">1 día</string>
+    <string name="posponer_3_dias">3 días</string>
+    <string name="posponer_7_dias">7 días</string>
+    <string name="alerta_pospuesta">Aviso pospuesto hasta el %1$s. El vencimiento real no cambia.</string>
+    <string name="mostrar_todas">Mostrar todas</string>
+    <plurals name="n_pospuestas">
+        <item quantity="one">%d alerta pospuesta</item>
+        <item quantity="other">%d alertas pospuestas</item>
+    </plurals>
+
+    <string name="foto_vehiculo">Foto del vehículo</string>
+    <string name="elegir_foto">Elegir foto</string>
+    <string name="hint_vin">Número VIN (opcional)</string>
+    <string name="hint_combustible">Tipo de combustible (opcional)</string>
+    <string name="hint_cilindraje">Cilindraje en cc (opcional)</string>
+    <string name="error_vin">El VIN debe tener 17 caracteres (letras y números, sin I, O ni Q)</string>
+    <string name="det_combustible">Combustible: %1$s</string>
+    <string name="det_cilindraje">Cilindraje: %1$d cc</string>
+    <string name="det_vin">VIN: %1$s</string>
+    <string-array name="combustibles">
+        <item>Sin especificar</item>
+        <item>Gasolina</item>
+        <item>Diésel</item>
+        <item>Eléctrico</item>
+        <item>Híbrido</item>
+        <item>Gas natural</item>
+    </string-array>
+
+    <string name="filtros">Filtros</string>
+    <string name="filtros_n">Filtros (%1$d)</string>
+    <string name="filtros_titulo">Filtrar el historial</string>
+    <string name="limpiar_filtros">Limpiar</string>
+    <string name="aplicar">Aplicar</string>
+    <string name="filtro_cualquiera">Cualquiera</string>
+    <string name="hint_filtro_categoria">Categoría</string>
+    <string name="hint_filtro_taller">Taller (contiene)</string>
+    <string name="hint_costo_minimo">Costo mínimo</string>
+    <string name="hint_costo_maximo">Costo máximo</string>
+    <string name="hint_fecha_desde">Desde (fecha)</string>
+    <string name="hint_fecha_hasta">Hasta (fecha)</string>
+    <string name="error_rango_fechas">La fecha final no puede ser anterior a la inicial</string>
+    <!-- Lote 6: adjuntos, CSV, respaldo y moneda -->
+    <string name="adjuntos_n">Adjuntos (%1$d)</string>
+    <string name="adjuntos_titulo">Fotos y documentos de soporte</string>
+    <string name="adjuntar_archivo">Adjuntar archivo</string>
+    <string name="sin_adjuntos">Este registro todavía no tiene adjuntos. Puedes agregar una foto de la factura o un PDF.</string>
+    <string name="adjunto_sin_nombre">Archivo adjunto</string>
+    <string name="adjunto_sin_aplicacion">No hay ninguna aplicación en el teléfono que pueda abrir este archivo</string>
+    <string name="adjunto_no_disponible">No se pudo abrir el archivo. Puede haber sido movido o eliminado</string>
+    <string name="abrir">Abrir</string>
+
+    <string name="exportar_csv">Exportar CSV</string>
+    <string name="csv_nombre_archivo">historial_min_bil.csv</string>
+    <string name="csv_exportado">Historial exportado: %1$d registros</string>
+    <string name="csv_error">No se pudo guardar el archivo CSV</string>
+    <string-array name="csv_encabezados">
+        <item>Placa</item>
+        <item>Tipo</item>
+        <item>Categoría</item>
+        <item>Clase</item>
+        <item>Descripción</item>
+        <item>Fecha</item>
+        <item>Kilometraje</item>
+        <item>Próximo kilometraje</item>
+        <item>Mano de obra</item>
+        <item>Repuestos</item>
+        <item>Otros costos</item>
+        <item>Costo total</item>
+        <item>Taller o repuestos</item>
+    </string-array>
+
+    <string name="ajustes_titulo">Ajustes y datos</string>
+    <string name="moneda_actual">Moneda: %1$s</string>
+    <string name="moneda_titulo">Elige la moneda</string>
+    <string name="moneda_item">%1$s · %2$s</string>
+    <string-array name="monedas">
+        <item>COP|Peso colombiano</item>
+        <item>USD|Dólar estadounidense</item>
+        <item>EUR|Euro</item>
+        <item>MXN|Peso mexicano</item>
+        <item>PEN|Sol peruano</item>
+    </string-array>
+
+    <string name="crear_respaldo">Crear copia de respaldo</string>
+    <string name="restaurar_respaldo">Restaurar copia de respaldo</string>
+    <string name="respaldo_nombre_archivo">min_bil_respaldo_%1$s.json</string>
+    <string name="respaldo_guardado_titulo">Copia de respaldo guardada</string>
+    <string name="respaldo_guardado_mensaje">El archivo contiene todos tus datos sin cifrar. Guárdalo en un lugar seguro y no lo compartas con personas que no sean de confianza.</string>
+    <string name="respaldo_error">No se pudo guardar la copia de respaldo</string>
+    <string name="restaurar_titulo">Restaurar copia de respaldo</string>
+    <string name="restaurar_mensaje">Los datos actuales de este teléfono serán reemplazados por los de la copia. Esta acción no se puede deshacer.</string>
+    <string name="restaurar_confirmar">Restaurar</string>
+    <string name="restauracion_ok">Copia restaurada correctamente</string>
+    <string name="restauracion_error">El archivo no es una copia de respaldo válida</string>
+    <string name="entendido">Entendido</string>
+    <!-- Lote 7: cierre -->
+    <string name="pendiente_sync">Pendiente de sincronizar</string>
+    <plurals name="n_pendientes">
+        <item quantity="one">%d cambio pendiente de sincronizar con la nube. Se enviará cuando haya conexión.</item>
+        <item quantity="other">%d cambios pendientes de sincronizar con la nube. Se enviarán cuando haya conexión.</item>
+    </plurals>
+    <string name="permiso_notif_titulo">Avisos de vencimientos</string>
+    <string name="permiso_notif_mensaje">Min Bil usa notificaciones para avisarte cuando un documento (SOAT, tecnomecánica…) o un mantenimiento esté por vencer o ya haya vencido. Es el único permiso que necesita.</string>
+    <string name="continuar">Continuar</string>
+    <string name="ahora_no">Ahora no</string>
 </resources>
