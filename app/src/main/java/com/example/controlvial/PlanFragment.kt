@@ -431,6 +431,7 @@ class PlanFragment : Fragment(R.layout.fragment_plan) {
         val tilKm = vista.findViewById<TextInputLayout>(R.id.tilSrvKm)
         val etKm = vista.findViewById<TextInputEditText>(R.id.etSrvKm)
         val etCosto = vista.findViewById<TextInputEditText>(R.id.etSrvCosto)
+        Ayudas.marcarMoneda(etCosto)
         val etTaller = vista.findViewById<TextInputEditText>(R.id.etSrvTaller)
 
         vista.findViewById<TextView>(R.id.tvSrvInfo).text = getString(R.string.servicio_info)
@@ -468,7 +469,8 @@ class PlanFragment : Fragment(R.layout.fragment_plan) {
                     return@setOnClickListener
                 }
 
-                val costo = etCosto.text.toString().trim().toDoubleOrNull() ?: 0.0
+                // Se escribe en la moneda elegida y se guarda en pesos (COP).
+                val costo = Formato.montoDesdeCampo(etCosto.text.toString()) ?: 0.0
                 val taller = etTaller.text.toString().trim()
 
                 fun guardar() {

@@ -92,6 +92,7 @@ object DialogoRepuestos {
         val etCantidad = vista.findViewById<TextInputEditText>(R.id.etRepCantidad)
         val tilValor = vista.findViewById<TextInputLayout>(R.id.tilRepValor)
         val etValor = vista.findViewById<TextInputEditText>(R.id.etRepValor)
+        Ayudas.marcarMoneda(etValor)
         val etProveedor = vista.findViewById<TextInputEditText>(R.id.etRepProveedor)
         val tilFecha = vista.findViewById<TextInputLayout>(R.id.tilRepFecha)
         val etFecha = vista.findViewById<TextInputEditText>(R.id.etRepFecha)
@@ -129,7 +130,8 @@ object DialogoRepuestos {
                     return@setOnClickListener
                 }
 
-                val valor = etValor.text.toString().trim().toDoubleOrNull()
+                // Se escribe en la moneda elegida y se guarda en pesos (COP).
+                val valor = Formato.montoDesdeCampo(etValor.text.toString())
                 if (valor == null) {
                     tilValor.error = contexto.getString(R.string.error_rep_valor)
                     return@setOnClickListener

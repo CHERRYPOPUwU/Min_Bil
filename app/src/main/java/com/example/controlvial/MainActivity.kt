@@ -59,6 +59,9 @@ class MainActivity : AppCompatActivity() {
         // Si hay documentos guardados de versiones antiguas sin vehículo, se recuperan.
         val repositorio = RepositorioMiCarro(this)
         Formato.codigoMoneda = repositorio.obtenerMoneda()
+        // Tasas de cambio: se cargan las últimas guardadas y, si hay internet, se actualizan.
+        Monedas.cargar(this)
+        Monedas.actualizar(this)
         repositorio.recuperarVehiculosAntiguos()
         repositorio.reintentarPendientes()
 

@@ -4,147 +4,156 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary_dark"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:paddingStart="20dp"
+        android:paddingTop="24dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="16dp">
 
-        <!-- ESPACIADOR SUPERIOR -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
+        <!-- LOGO -->
+        <ImageView
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_logo_circulo"
+            android:importantForAccessibility="no"
+            android:padding="20dp"
+            android:src="@drawable/ic_nav_vehiculos"
+            app:tint="#FFFFFF" />
 
-        <!-- LOGO Y TÍTULO -->
-        
-
+        <!-- NOMBRE DE LA APP -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="14dp"
+            android:accessibilityHeading="true"
+            android:fontFamily="@font/poppins_bold"
             android:text="@string/app_name"
             android:textColor="#FFFFFF"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:letterSpacing="0.05" />
+            android:textSize="32sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="28dp"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
             android:text="Todo el historial, cada kilómetro"
-            android:textColor="#90A4AE"
-            android:textSize="14sp"
-            android:layout_marginBottom="32dp" />
+            android:textColor="#B6C6D4"
+            android:textSize="13.5sp" />
 
         <!-- TARJETA BLANCA FLOTANTE -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="10dp"
             app:cardBackgroundColor="#FFFFFF"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
             app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="24dp">
+                android:paddingStart="22dp"
+                android:paddingTop="26dp"
+                android:paddingEnd="22dp"
+                android:paddingBottom="14dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:accessibilityHeading="true"
+                    android:fontFamily="@font/poppins_bold"
                     android:text="Bienvenido de nuevo"
                     android:textColor="#0F172A"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/poppins_regular"
                     android:text="Inicia sesión para administrar tus vehículos."
                     android:textColor="#64748B"
-                    android:textSize="13.5sp"
-                    android:layout_marginBottom="24dp" />
+                    android:textSize="13sp" />
 
-                <!-- CORREO ELECTRÓNICO -->
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Campo.Poppins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Correo electrónico"
-                    android:textColor="#334155"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="22dp"
+                    android:hint="Correo electrónico"
+                    app:placeholderText="ejemplo@correo.com">
 
-                <EditText
-                    android:id="@+id/etEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:hint="ejemplo@correo.com"
-                    android:inputType="textEmailAddress"
-                    android:singleLine="true"
-                    android:paddingHorizontal="14dp"
-                    android:textColor="#0F172A"
-                    android:textSize="15sp" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:textColor="#0F172A"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- CONTRASEÑA -->
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Campo.Poppins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Contraseña"
-                    android:textColor="#334155"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+                    android:hint="Contraseña"
+                    app:placeholderText="Ingresa tu contraseña"
+                    app:endIconMode="password_toggle">
 
-                <EditText
-                    android:id="@+id/etPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:layout_marginTop="6dp"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:hint="Ingresa tu contraseña"
-                    android:inputType="textPassword"
-                    android:singleLine="true"
-                    android:paddingHorizontal="14dp"
-                    android:textColor="#0F172A"
-                    android:textSize="15sp" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/poppins_regular"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:textColor="#0F172A"
+                        android:textSize="15sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- BOTÓN INICIAR SESIÓN -->
-                <Button
+                <!-- BOTÓN -->
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
-                    android:layout_height="54dp"
+                    android:layout_height="56dp"
                     android:layout_marginTop="26dp"
                     android:backgroundTint="@color/primary"
+                    android:fontFamily="@font/poppins_medium"
                     android:text="Iniciar sesión"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:cornerRadius="12dp" />
+                    app:cornerRadius="14dp" />
 
-                <!-- ENLACE DE REGISTRO -->
+                <!-- ENLACE -->
                 <TextView
                     android:id="@+id/tvIrRegistro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:gravity="center"
-                    android:text="¿Todavía no tienes una cuenta? Regístrate"
-                    android:textColor="#2563EB"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"
                     android:clickable="true"
                     android:focusable="true"
-                    android:padding="6dp" />
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:minHeight="48dp"
+                    android:padding="8dp"
+                    android:text="¿Aún no tienes cuenta? Regístrate"
+                    android:textColor="#2563EB"
+                    android:textSize="13.5sp" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -153,12 +162,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/poppins_regular"
             android:gravity="center"
             android:text="Tus documentos, siempre bajo control."
-            android:textColor="#90A4AE"
-            android:textSize="13sp" />
+            android:textColor="#B6C6D4"
+            android:textSize="12.5sp" />
 
     </LinearLayout>
 

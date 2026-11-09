@@ -407,6 +407,12 @@
     <string name="moneda_actual">Moneda: %1$s</string>
     <string name="moneda_titulo">Elige la moneda</string>
     <string name="moneda_item">%1$s · %2$s</string>
+    <string name="foto_principal_desc">Foto del vehículo principal</string>
+    <string name="moneda_tasa_actualizada">1 %1$s = %2$s COP · tasa del %3$s</string>
+    <string name="moneda_tasa_aproximada">1 %1$s ≈ %2$s COP · tasa aproximada (sin actualizar)</string>
+    <string name="moneda_tasa_base">Los montos se guardan en pesos colombianos (COP) y se convierten al mostrarlos.</string>
+    <string name="moneda_tasas_actualizadas">Tasas de cambio actualizadas</string>
+    <string name="moneda_sin_conexion">Sin conexión: se usa la última tasa disponible</string>
     <string-array name="monedas">
         <item>COP|Peso colombiano</item>
         <item>USD|Dólar estadounidense</item>

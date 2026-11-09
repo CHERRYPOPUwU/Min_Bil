@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -91,6 +92,7 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
 
         vista.findViewById<TextView>(R.id.btnMoneda).text =
             getString(R.string.moneda_actual, repo.obtenerMoneda())
+        pintarTasa(vista, repo.obtenerMoneda())
 
         pintarGastos(vista, repo)
         pintarAlertas(vista, alertasVisibles)
@@ -112,6 +114,13 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
 
         val placa = principal.optString("placa")
         vista.findViewById<TextView>(R.id.tvPlacaPrincipal).text = placa
+
+        // La foto opcional del registro del vehículo aparece arriba de la tarjeta.
+        Ayudas.mostrarBanner(
+            requireContext(),
+            vista.findViewById<ImageView>(R.id.ivFotoPrincipal),
+            principal.optString("foto")
+        )
 
         val detalle = listOf(
             principal.optString("marca"),
@@ -182,6 +191,23 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
         }
     }
 
+    /** Explica qué tasa se está usando para convertir los montos. */
+    private fun pintarTasa(vista: View, codigo: String) {
+        val texto = vista.findViewById<TextView>(R.id.tvTasaMoneda)
+        if (codigo == Monedas.BASE) {
+            texto.text = getString(R.string.moneda_tasa_base)
+            return
+        }
+        val formato = java.text.NumberFormat.getNumberInstance(Locale("es", "CO"))
+        formato.maximumFractionDigits = 2
+        val tasa = formato.format(Monedas.tasa(codigo))
+        texto.text = if (Monedas.fechaTasas.isNotEmpty()) {
+            getString(R.string.moneda_tasa_actualizada, codigo, tasa, Monedas.fechaTasas)
+        } else {
+            getString(R.string.moneda_tasa_aproximada, codigo, tasa)
+        }
+    }
+
     private fun elegirMoneda() {
         val repo = RepositorioMiCarro(requireContext())
         val opciones = resources.getStringArray(R.array.monedas)
@@ -197,6 +223,17 @@ class InicioFragment : Fragment(R.layout.fragment_inicio) {
                 repo.guardarMoneda(codigos[posicion])
                 dialogo.dismiss()
                 actualizar()
+                // Se intenta traer la tasa más reciente y se vuelve a pintar con ella.
+                Monedas.actualizar(requireContext(), forzar = true) { exito ->
+                    if (isAdded) {
+                        actualizar()
+                        Toast.makeText(
+                            requireContext(),
+                            if (exito) R.string.moneda_tasas_actualizadas else R.string.moneda_sin_conexion,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
             }
             .setNegativeButton(R.string.cancelar, null)
             .show()

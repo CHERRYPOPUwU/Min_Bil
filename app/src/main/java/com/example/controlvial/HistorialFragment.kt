@@ -22,8 +22,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import org.json.JSONObject
-import java.math.BigDecimal
-import java.math.RoundingMode
 import java.util.Date
 
 /** Registro y consulta de documentos y servicios (RF-17 a RF-22, RF-34). */
@@ -122,6 +120,8 @@ class HistorialFragment : Fragment(R.layout.fragment_historial) {
         etCostoRepuestos = view.findViewById(R.id.etCostoRepuestos)
         etOtrosCostos = view.findViewById(R.id.etOtrosCostos)
         etCosto = view.findViewById(R.id.etCosto)
+        // Los montos se escriben en la moneda elegida; se guardan siempre en pesos (COP).
+        listOf(etManoObra, etCostoRepuestos, etOtrosCostos, etCosto).forEach { Ayudas.marcarMoneda(it) }
         etTaller = view.findViewById(R.id.etTaller)
         botonGuardar = view.findViewById(R.id.btnGuardarRegistro)
         botonCancelar = view.findViewById(R.id.btnCancelarEdicion)
@@ -177,8 +177,30 @@ class HistorialFragment : Fragment(R.layout.fragment_historial) {
         etOtrosCostos.doAfterTextChanged { recalcularTotal() }
     }
 
-    private fun numero(campo: TextInputEditText): Double =
-        campo.text.toString().trim().toDoubleOrNull() ?: 0.0
+    /**
+     * Texto con el que se llenó cada campo de monto y el valor guardado (COP) que representa.
+     * Evita que, al editar un registro sin tocar un monto, la conversión de ida y vuelta
+     * (por ejemplo a dólares y de regreso) cambie unos pesos por redondeo.
+     */
+    private val montosOriginales = HashMap<TextInputEditText, Pair<String, Double>>()
+
+    /** Escribe un valor guardado (COP) en un campo, mostrado en la moneda elegida. */
+    private fun ponerMonto(campo: TextInputEditText, valorCop: Double) {
+        val texto = textoNumero(valorCop)
+        montosOriginales[campo] = texto to valorCop
+        campo.setText(texto)
+    }
+
+    /** Lo que hay escrito en el campo, convertido a pesos (COP); nulo si está vacío o inválido. */
+    private fun montoBase(campo: TextInputEditText): Double? {
+        val texto = campo.text.toString().trim()
+        if (texto.isEmpty()) return null
+        val original = montosOriginales[campo]
+        if (original != null && original.first == texto) return original.second
+        return Formato.montoDesdeCampo(texto)
+    }
+
+    private fun numero(campo: TextInputEditText): Double = montoBase(campo) ?: 0.0
 
     private fun recalcularTotal() {
         val suma = ReglasMantenimiento.costoTotal(
@@ -187,9 +209,8 @@ class HistorialFragment : Fragment(R.layout.fragment_historial) {
         etCosto.setText(textoNumero(suma))
     }
 
-    private fun textoNumero(valor: Double): String =
-        if (valor <= 0.0) "" else BigDecimal(valor).setScale(2, RoundingMode.HALF_UP)
-            .stripTrailingZeros().toPlainString()
+    /** Valor guardado (COP) como texto de campo, en la moneda elegida. */
+    private fun textoNumero(valor: Double): String = Formato.montoParaCampo(valor)
 
     /** Un documento usa la fecha como vencimiento; un servicio, como fecha de realización. */
     private fun actualizarCamposPorTipo(tipo: String) {
@@ -291,11 +312,11 @@ class HistorialFragment : Fragment(R.layout.fragment_historial) {
         if (km > 0) etKm.setText(km.toString())
         if (proximoKm > 0) etProximoKm.setText(proximoKm.toString())
 
-        etManoObra.setText(textoNumero(registro.optDouble("mano_obra", 0.0)))
-        etCostoRepuestos.setText(textoNumero(registro.optDouble("costo_repuestos", 0.0)))
-        etOtrosCostos.setText(textoNumero(registro.optDouble("otros_costos", 0.0)))
+        ponerMonto(etManoObra, registro.optDouble("mano_obra", 0.0))
+        ponerMonto(etCostoRepuestos, registro.optDouble("costo_repuestos", 0.0))
+        ponerMonto(etOtrosCostos, registro.optDouble("otros_costos", 0.0))
         // El total se escribe al final para conservar un ajuste hecho antes por el usuario.
-        etCosto.setText(textoNumero(registro.optDouble("costo", 0.0)))
+        ponerMonto(etCosto, registro.optDouble("costo", 0.0))
         etTaller.setText(registro.optString("taller_repuestos"))
 
         tvTituloFormulario.setText(R.string.editar_registro_titulo)
@@ -362,7 +383,7 @@ class HistorialFragment : Fragment(R.layout.fragment_historial) {
         val manoObra = if (esServicio) numero(etManoObra) else 0.0
         val repuestos = if (esServicio) numero(etCostoRepuestos) else 0.0
         val otros = if (esServicio) numero(etOtrosCostos) else 0.0
-        val totalEscrito = etCosto.text.toString().trim().toDoubleOrNull()
+        val totalEscrito = montoBase(etCosto)
         val total = totalEscrito ?: ReglasMantenimiento.costoTotal(manoObra, repuestos, otros)
 
         val registro = editando ?: JSONObject()
@@ -505,6 +526,8 @@ class HistorialFragment : Fragment(R.layout.fragment_historial) {
         )
 
         etTallerFiltro.setText(filtroAvanzado.taller)
+        Ayudas.marcarMoneda(etMin)
+        Ayudas.marcarMoneda(etMax)
         filtroAvanzado.costoMin?.let { etMin.setText(textoNumero(it)) }
         filtroAvanzado.costoMax?.let { etMax.setText(textoNumero(it)) }
         filtroAvanzado.desde?.let { etDesde.setText(repo.formatearFecha(it)) }
@@ -544,8 +567,8 @@ class HistorialFragment : Fragment(R.layout.fragment_historial) {
                     categoria = acCategoria.text.toString().takeIf { it != cualquiera } ?: "",
                     clase = acClaseFiltro.text.toString().takeIf { it != cualquiera } ?: "",
                     taller = etTallerFiltro.text.toString().trim(),
-                    costoMin = etMin.text.toString().trim().toDoubleOrNull(),
-                    costoMax = etMax.text.toString().trim().toDoubleOrNull(),
+                    costoMin = Formato.montoDesdeCampo(etMin.text.toString()),
+                    costoMax = Formato.montoDesdeCampo(etMax.text.toString()),
                     desde = desde,
                     hasta = hasta
                 )

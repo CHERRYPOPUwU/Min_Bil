@@ -27,7 +27,9 @@ object Formato {
     /** Código de la moneda elegida por el usuario (se carga al abrir la app). */
     var codigoMoneda: String = "COP"
 
-    fun moneda(valor: Double): String {
+    /** Muestra un valor guardado (en pesos colombianos) en la moneda elegida, ya convertido. */
+    fun moneda(valorCop: Double): String {
+        val valor = Monedas.desdeBase(valorCop, codigoMoneda)
         val formato = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
         try {
             formato.currency = Currency.getInstance(codigoMoneda)
@@ -35,10 +37,22 @@ object Formato {
             // Si el código no es válido se conserva la moneda por defecto.
         }
         // El peso colombiano se muestra sin decimales; las demás monedas con dos.
-        formato.maximumFractionDigits = if (codigoMoneda == "COP") 0 else 2
+        formato.maximumFractionDigits = Monedas.decimales(codigoMoneda)
         formato.minimumFractionDigits = formato.maximumFractionDigits
         return formato.format(valor)
     }
+
+    /** Texto de un valor guardado (COP) para escribirlo en un campo, en la moneda elegida. */
+    fun montoParaCampo(valorCop: Double): String {
+        if (valorCop <= 0.0) return ""
+        return java.math.BigDecimal(Monedas.desdeBase(valorCop, codigoMoneda))
+            .setScale(Monedas.decimales(codigoMoneda), java.math.RoundingMode.HALF_UP)
+            .stripTrailingZeros().toPlainString()
+    }
+
+    /** Lo escrito en un campo (en la moneda elegida) convertido a pesos para guardarlo. */
+    fun montoDesdeCampo(texto: String): Double? =
+        Monedas.leerNumero(texto)?.let { Monedas.haciaBase(it, codigoMoneda) }
 
     fun kilometros(km: Int): String =
         NumberFormat.getIntegerInstance(Locale("es", "CO")).format(km)
@@ -118,34 +132,7 @@ object Ayudas {
      * Si no hay foto, o ya no se puede leer, deja un ícono de vehículo.
      */
     fun mostrarFoto(contexto: Context, vista: ImageView, direccion: String, ladoDp: Int = 72) {
-        var mapa: Bitmap? = null
-        if (direccion.isNotEmpty()) {
-            try {
-                val lado = Estilos.dp(contexto, ladoDp)
-                val uri = Uri.parse(direccion)
-
-                val medidas = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-                contexto.contentResolver.openInputStream(uri)?.use {
-                    BitmapFactory.decodeStream(it, null, medidas)
-                }
-
-                // Se reduce la imagen para no gastar memoria con fotos muy grandes.
-                var muestra = 1
-                while (medidas.outWidth / (muestra * 2) >= lado &&
-                    medidas.outHeight / (muestra * 2) >= lado
-                ) {
-                    muestra *= 2
-                }
-                val opciones = BitmapFactory.Options().apply { inSampleSize = muestra }
-                mapa = contexto.contentResolver.openInputStream(uri)?.use {
-                    BitmapFactory.decodeStream(it, null, opciones)
-                }
-            } catch (e: Exception) {
-                Bitacora.error("Foto", "No se pudo cargar la imagen", e)
-                mapa = null
-            }
-        }
-
+        val mapa = leerFoto(contexto, direccion, ladoDp)
         if (mapa != null) {
             vista.scaleType = ImageView.ScaleType.CENTER_CROP
             vista.setImageBitmap(mapa)
@@ -153,6 +140,83 @@ object Ayudas {
             vista.scaleType = ImageView.ScaleType.CENTER
             vista.setImageResource(R.drawable.ic_nav_vehiculos)
         }
+    }
+
+    /**
+     * Lee la foto reducida (para no gastar memoria) y la gira si el teléfono la guardó de lado.
+     * Devuelve nulo si no hay foto o ya no se puede leer.
+     */
+    private fun leerFoto(contexto: Context, direccion: String, ladoDp: Int): Bitmap? {
+        if (direccion.isEmpty()) return null
+        try {
+            val lado = Estilos.dp(contexto, ladoDp)
+            val uri = Uri.parse(direccion)
+
+            val medidas = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            contexto.contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it, null, medidas)
+            }
+
+            var muestra = 1
+            while (medidas.outWidth / (muestra * 2) >= lado &&
+                medidas.outHeight / (muestra * 2) >= lado
+            ) {
+                muestra *= 2
+            }
+            val opciones = BitmapFactory.Options().apply { inSampleSize = muestra }
+            val mapa = contexto.contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it, null, opciones)
+            } ?: return null
+
+            return girarSegunOrientacion(contexto, uri, mapa)
+        } catch (e: Exception) {
+            Bitacora.error("Foto", "No se pudo cargar la imagen", e)
+            return null
+        }
+    }
+
+    private fun girarSegunOrientacion(contexto: Context, uri: Uri, mapa: Bitmap): Bitmap {
+        val grados = try {
+            contexto.contentResolver.openInputStream(uri)?.use {
+                when (android.media.ExifInterface(it).getAttributeInt(
+                    android.media.ExifInterface.TAG_ORIENTATION,
+                    android.media.ExifInterface.ORIENTATION_NORMAL
+                )) {
+                    android.media.ExifInterface.ORIENTATION_ROTATE_90 -> 90f
+                    android.media.ExifInterface.ORIENTATION_ROTATE_180 -> 180f
+                    android.media.ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+                    else -> 0f
+                }
+            } ?: 0f
+        } catch (e: Exception) {
+            0f
+        }
+        if (grados == 0f) return mapa
+        val matriz = android.graphics.Matrix().apply { postRotate(grados) }
+        return Bitmap.createBitmap(mapa, 0, 0, mapa.width, mapa.height, matriz, true)
+    }
+
+    /** Muestra el código de la moneda elegida como prefijo del campo de un monto (ej. "USD "). */
+    fun marcarMoneda(campo: TextInputEditText) {
+        var padre = campo.parent
+        while (padre != null && padre !is TextInputLayout) padre = padre.parent
+        (padre as? TextInputLayout)?.prefixText = Formato.codigoMoneda + " "
+    }
+
+    /**
+     * Muestra la foto como banner. Si no hay foto, o no se puede leer, oculta la vista.
+     * Devuelve true si la foto se mostró.
+     */
+    fun mostrarBanner(contexto: Context, vista: ImageView, direccion: String, anchoDp: Int = 360): Boolean {
+        val mapa = leerFoto(contexto, direccion, anchoDp)
+        if (mapa == null) {
+            vista.visibility = View.GONE
+            return false
+        }
+        vista.scaleType = ImageView.ScaleType.CENTER_CROP
+        vista.setImageBitmap(mapa)
+        vista.visibility = View.VISIBLE
+        return true
     }
 
     /** Llena una lista desplegable (Material) y deja seleccionado un valor inicial. */
